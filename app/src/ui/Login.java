@@ -20,10 +20,13 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
-import ui.sales.MainMenu;
+import ui.manager.ManagerMainMenu;
+import ui.sales.SalesMainMenu;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 
 public class Login extends JFrame {
@@ -74,7 +77,7 @@ public class Login extends JFrame {
 				System.out.println(emailTextField.getText());
 				if (emailTextField.getText().equals("sales@email.com")) {
 					try {
-						MainMenu mainMenuFrame = new MainMenu();
+						SalesMainMenu mainMenuFrame = new SalesMainMenu();
 						mainMenuFrame.setVisible(true);
 						Component component = (Component) e.getSource();
 				        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
@@ -83,7 +86,19 @@ public class Login extends JFrame {
 						e1.printStackTrace();
 					}
 				}
-					
+				
+				if (emailTextField.getText().equals("manager@email.com")) {
+					try {
+						ManagerMainMenu mainMenuFrame = new ManagerMainMenu();
+						mainMenuFrame.setVisible(true);
+						Component component = (Component) e.getSource();
+				        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
+				        frame.setVisible(false);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+				
 			}
 		});
 		loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
