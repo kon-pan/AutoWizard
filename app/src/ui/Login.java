@@ -5,6 +5,7 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 
 import javax.swing.GroupLayout;
@@ -16,7 +17,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import ui.sales.MainMenu;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
 
 public class Login extends JFrame {
 
@@ -61,6 +69,23 @@ public class Login extends JFrame {
 		lbl3.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JButton loginBtn = new JButton("Login");
+		loginBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(emailTextField.getText());
+				if (emailTextField.getText().equals("sales@email.com")) {
+					try {
+						MainMenu mainMenuFrame = new MainMenu();
+						mainMenuFrame.setVisible(true);
+						Component component = (Component) e.getSource();
+				        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
+				        frame.setVisible(false);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+				}
+					
+			}
+		});
 		loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		GroupLayout gl_panel2 = new GroupLayout(panel2);
 		gl_panel2.setHorizontalGroup(
