@@ -7,6 +7,9 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -14,27 +17,22 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import models.EmployeeList;
 import ui.manager.ManagerMainMenu;
 import ui.sales.SalesMainMenu;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField emailTextField;
-	private JTextField passwordTextField;
-
+	private JPasswordField passwordTextField;
 	/**
 	 * Create the frame.
 	 */
@@ -64,7 +62,7 @@ public class Login extends JFrame {
 		emailTextField = new JTextField();
 		emailTextField.setColumns(10);
 		
-		passwordTextField = new JTextField();
+		passwordTextField = new JPasswordField();
 		passwordTextField.setColumns(10);
 		
 		JLabel lbl3 = new JLabel("Password");
@@ -74,31 +72,60 @@ public class Login extends JFrame {
 		JButton loginBtn = new JButton("Login");
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(emailTextField.getText());
-				if (emailTextField.getText().equals("sales@email.com")) {
-					try {
-						SalesMainMenu mainMenuFrame = new SalesMainMenu();
-						mainMenuFrame.setVisible(true);
-						Component component = (Component) e.getSource();
-				        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
-				        frame.setVisible(false);
-					} catch (Exception e1) {
-						e1.printStackTrace();
-					}
-				}
+				String email = emailTextField.getText();
+				// Get employee record using email provided by the user
+				EmployeeList el = new EmployeeList();
+				List<Object> employee = el.getEmployeeByEmail(email);
 				
-				if (emailTextField.getText().equals("manager@email.com")) {
-					try {
-						ManagerMainMenu mainMenuFrame = new ManagerMainMenu();
-						mainMenuFrame.setVisible(true);
+				if (employee.size() > 0) { // Employee record found
+					// Compare password input with registered password
+					String inputPassword = new String(passwordTextField.getPassword());
+					String registeredPassword = (String) employee.get(4);
+					
+					System.out.println(inputPassword);
+					System.out.println(registeredPassword);
+					
+					if (inputPassword.equals(registeredPassword)) {
+						System.out.println("Passwords match!");
+						// Check employee position
+						String position = (String) employee.get(5);
+						
 						Component component = (Component) e.getSource();
-				        JFrame frame = (JFrame) SwingUtilities.getRoot(component);
-				        frame.setVisible(false);
-					} catch (Exception e1) {
-						e1.printStackTrace();
+						JFrame currentFrame = (JFrame) SwingUtilities.getRoot(component);
+						switch (position) {
+						case "Manager":
+							// Render Manager main window
+							System.out.println(position);
+							
+							// Close current window
+					        currentFrame.setVisible(false);
+					        
+					        ManagerMainMenu managerFrame = new ManagerMainMenu();
+					        managerFrame.setVisible(true);
+					        
+							break;
+						case "Sales":
+							// Render Sales main window
+							System.out.println(position);
+							
+							// Close current window
+					        currentFrame.setVisible(false);
+					       
+					        SalesMainMenu salesFrame = new SalesMainMenu();
+					        salesFrame.setVisible(true);
+					        
+							break;
+						case "Mechanic":
+							// Render Repairs main window
+							System.out.println(position);
+							break;
+						default:
+							// code block
+						}
 					}
+				} else {
+					System.out.println("Employee with the following email address does not exist:\n" + email);
 				}
-				
 			}
 		});
 		loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
