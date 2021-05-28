@@ -4,42 +4,110 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.table.DefaultTableModel;
+
 public class EmployeeList {
 	// Mock data - Employee records
-	// 
-	private ArrayList<Object> employeesList  = new ArrayList<Object>();
-	//Employee 1
-    private List<Object> employee1 = Arrays.asList( 1043805, "Konstantinos", "Panos", "kpanos@email.com", "password", "Manager");
-    //Employee 2
-    private List<Object> employee2 = Arrays.asList( 1042675, "Stylianos", "Avlakiotis", "avlakiotis@email.com", "password", "Sales");
-    
-    public EmployeeList() {
-    	this.employeesList.add(employee1);
-    	this.employeesList.add(employee2);
-    }
-    
-    // This function emulates a call to the database
-    // Returns all employees stored in the database
-    public ArrayList<Object> getAllEmployees() {
+	//
+//	private ArrayList<Object> employeesList  = new ArrayList<Object>();
+	private ArrayList<Employee> employeesList = new ArrayList<Employee>();
+	// Employee 1
+//	private List<Object> employee1 = Arrays.asList(1043805, "Konstantinos", "Panos", "kpanos@email.com", "password",
+//			"Manager");
+	// Employee 2
+//	private List<Object> employee2 = Arrays.asList(1042675, "Stylianos", "Avlakiotis", "avlakiotis@email.com",
+//			"password", "Sales");
+
+	public EmployeeList() {
+//    	this.employeesList.add(employee1);
+//    	this.employeesList.add(employee2);
+		employeesList.add(new Employee("26/07/1996", "Konstantinos", "Panos", "AB 123456", "16/07/2019", "87651234",
+				1043895, "kpanos@email.com", "Manager", "password"));
+		employeesList.add(new Employee("17/09/1998", "Stylianos", "Avlakiotis", "EB 125676", "16/07/2019", "12651234",
+				1046292, "avlakiotis@email.com", "Sales", "password"));
+		employeesList.add(new Employee("28/09/1992", "Konstantinos", "Papadopoulos", "AB 123456", "16/07/2019", "87651234",
+				3653895, "kpanos@email.com", "Manager", "password"));
+	}
+
+	// This function emulates a call to the database
+	// Returns all employees stored in the database
+//    public ArrayList<Object> getAllEmployees() {
+//		return this.employeesList;
+//    }
+
+	public ArrayList<Employee> getAllEmployees() {
 		return this.employeesList;
-    }
-    
-    @SuppressWarnings("unchecked")
-	public List<Object> getEmployeeByEmail(String email) {
-    	// Get all employees
-    	ArrayList<Object> employees = this.getAllEmployees();
-    	
-    	// Iterate all employees until a matching email is found
-    	List<Object> employee  = new ArrayList<Object>();
-    	
-    	// For Loop for iterating ArrayList
-        for (int i = 0; i < employees.size(); i++) {
-        	List<Object> element  = (List<Object>) employees.get(i);
-        	if (element.get(3).equals(email)) {
-        		employee = element;
-        	}
-    	}
-        
+	}
+
+	public Employee getEmployeeByEmail(String email) {
+		// Get all employees
+		ArrayList<Employee> employees = this.getAllEmployees();
+		Employee employee = null;
+		
+		// Iterate all employees until a matching email is found
+		// For Loop for iterating ArrayList
+		for (int i = 0; i < employees.size(); i++) {
+			Employee element = employees.get(i);
+			if(element.getEmail().equals(email)) {
+				employee = element;
+				break;
+			}
+		}
+
 		return employee;
-    }
+	}
+	
+	public DefaultTableModel createEmployeesList() {
+		String columnHeaders[] = {"ID","First name", "Last name", "Department"};
+		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 0);
+		
+		// Get data to populate table
+		EmployeeList el = new EmployeeList();
+		ArrayList<Employee> employees = el.getAllEmployees();
+		
+		for (int i = 0; i < employees.size(); i++) {
+			int employeeId = employees.get(i).getEmployeeId();
+			String firstName = employees.get(i).getFirstName();
+			String lastName = employees.get(i).getLastName();
+			String department = employees.get(i).getDepartment();
+			
+			Object[] row = {employeeId, firstName, lastName, department};
+			
+			tableModel.addRow(row);
+		}
+		return tableModel;
+	}
+	
+	public DefaultTableModel createEmployeesList(ArrayList<Employee> searchResults) {
+		String columnHeaders[] = {"ID","First name", "Last name", "Department"};
+		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 0);
+		
+		for (int i = 0; i < searchResults.size(); i++) {
+			int employeeId = searchResults.get(i).getEmployeeId();
+			String firstName = searchResults.get(i).getFirstName();
+			String lastName = searchResults.get(i).getLastName();
+			String department = searchResults.get(i).getDepartment();
+			
+			Object[] row = {employeeId, firstName, lastName, department};
+			
+			tableModel.addRow(row);
+		}
+		return tableModel;
+	}
+
+	public Employee getEmployeeById(int selectedEmployeeId) {
+		// Get all employees
+		ArrayList<Employee> employees = this.getAllEmployees();
+		Employee employee = null;
+		
+		for (int i = 0; i < employees.size(); i++) {
+			Employee element = employees.get(i);
+			if(element.getEmployeeId() == selectedEmployeeId) {
+				employee = element;
+				break;
+			}
+		}
+
+		return employee;
+	}
 }

@@ -24,15 +24,18 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import models.Employee;
 import models.EmployeeList;
 import ui.manager.ManagerMainMenu;
 import ui.sales.SalesMainMenu;
+import java.awt.Color;
 
 public class Login extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField emailTextField;
 	private JPasswordField passwordTextField;
+
 	/**
 	 * Create the frame.
 	 */
@@ -44,125 +47,112 @@ public class Login extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		
+
 		JPanel panel1 = new JPanel();
 		contentPane.add(panel1, BorderLayout.NORTH);
-		
+
 		JLabel lbl1 = new JLabel("Enter your login credentials");
 		lbl1.setHorizontalAlignment(SwingConstants.CENTER);
 		lbl1.setFont(new Font("Tahoma", Font.BOLD, 14));
 		panel1.add(lbl1);
-		
+
 		JPanel panel2 = new JPanel();
 		contentPane.add(panel2, BorderLayout.CENTER);
-		
+
 		JLabel lbl2 = new JLabel("E-mail");
+		lbl2.setBounds(110, 55, 36, 15);
 		lbl2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
 		emailTextField = new JTextField();
+		emailTextField.setBounds(156, 53, 237, 20);
 		emailTextField.setColumns(10);
-		
+
 		passwordTextField = new JPasswordField();
+		passwordTextField.setBounds(156, 91, 237, 20);
 		passwordTextField.setColumns(10);
-		
+
 		JLabel lbl3 = new JLabel("Password");
+		lbl3.setBounds(74, 93, 72, 15);
 		lbl3.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl3.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
+
+		JLabel errorMsgLabel = new JLabel("Employee with the following email address does not exist:");
+		errorMsgLabel.setBounds(44, 164, 397, 79);
+		errorMsgLabel.setForeground(Color.RED);
+		errorMsgLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		errorMsgLabel.setVisible(false);
+
 		JButton loginBtn = new JButton("Login");
+		loginBtn.setBounds(323, 122, 70, 31);
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String email = emailTextField.getText();
 				// Get employee record using email provided by the user
 				EmployeeList el = new EmployeeList();
-				List<Object> employee = el.getEmployeeByEmail(email);
-				
-				if (employee.size() > 0) { // Employee record found
+				Employee employee = el.getEmployeeByEmail(email);
+
+				if (employee != null ) { // Employee record found
 					// Compare password input with registered password
 					String inputPassword = new String(passwordTextField.getPassword());
-					String registeredPassword = (String) employee.get(4);
-					
+					String registeredPassword = employee.getPassword();
+
 					System.out.println(inputPassword);
 					System.out.println(registeredPassword);
-					
+
 					if (inputPassword.equals(registeredPassword)) {
 						System.out.println("Passwords match!");
 						// Check employee position
-						String position = (String) employee.get(5);
-						
+						String department = employee.getDepartment();
+						System.out.println(department);
+
 						Component component = (Component) e.getSource();
 						JFrame currentFrame = (JFrame) SwingUtilities.getRoot(component);
-						switch (position) {
+						switch (department) {
 						case "Manager":
 							// Render Manager main window
-							System.out.println(position);
-							
+							System.out.println(department);
+
 							// Close current window
-					        currentFrame.setVisible(false);
-					        
-					        ManagerMainMenu managerFrame = new ManagerMainMenu();
-					        managerFrame.setVisible(true);
-					        
+							currentFrame.setVisible(false);
+
+							ManagerMainMenu managerFrame = new ManagerMainMenu();
+							managerFrame.setVisible(true);
+
 							break;
 						case "Sales":
 							// Render Sales main window
-							System.out.println(position);
-							
+							System.out.println(department);
+
 							// Close current window
-					        currentFrame.setVisible(false);
-					       
-					        SalesMainMenu salesFrame = new SalesMainMenu();
-					        salesFrame.setVisible(true);
-					        
+							currentFrame.setVisible(false);
+
+							SalesMainMenu salesFrame = new SalesMainMenu();
+							salesFrame.setVisible(true);
+
 							break;
 						case "Mechanic":
 							// Render Repairs main window
-							System.out.println(position);
+							System.out.println(department);
 							break;
 						default:
 							// code block
 						}
 					}
-				} else {
+				} else { // Email does not exist
 					System.out.println("Employee with the following email address does not exist:\n" + email);
+					errorMsgLabel.setText("<html>" + errorMsgLabel.getText() + "<br>" + email + "</html>");
+					errorMsgLabel.setVisible(true);
 				}
 			}
 		});
+
 		loginBtn.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		GroupLayout gl_panel2 = new GroupLayout(panel2);
-		gl_panel2.setHorizontalGroup(
-			gl_panel2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel2.createSequentialGroup()
-					.addGroup(gl_panel2.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_panel2.createSequentialGroup()
-							.addContainerGap()
-							.addComponent(loginBtn, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
-						.addGroup(Alignment.LEADING, gl_panel2.createSequentialGroup()
-							.addGap(57)
-							.addGroup(gl_panel2.createParallelGroup(Alignment.LEADING)
-								.addComponent(lbl3, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lbl2, Alignment.TRAILING))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_panel2.createParallelGroup(Alignment.LEADING)
-								.addComponent(passwordTextField, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE)
-								.addComponent(emailTextField, GroupLayout.PREFERRED_SIZE, 237, GroupLayout.PREFERRED_SIZE))))
-					.addContainerGap(98, Short.MAX_VALUE))
-		);
-		gl_panel2.setVerticalGroup(
-			gl_panel2.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel2.createSequentialGroup()
-					.addGap(53)
-					.addGroup(gl_panel2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(emailTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lbl2))
-					.addGap(18)
-					.addGroup(gl_panel2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lbl3, GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
-						.addComponent(passwordTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(18)
-					.addComponent(loginBtn, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(84, Short.MAX_VALUE))
-		);
-		panel2.setLayout(gl_panel2);
+		panel2.setLayout(null);
+		panel2.add(errorMsgLabel);
+		panel2.add(lbl3);
+		panel2.add(lbl2);
+		panel2.add(passwordTextField);
+		panel2.add(emailTextField);
+		panel2.add(loginBtn);
 	}
 }
