@@ -78,15 +78,15 @@ public class EmployeeList {
 		return tableModel;
 	}
 	
-	public DefaultTableModel createEmployeesList(ArrayList<Employee> searchResults) {
+	public DefaultTableModel createEmployeesList(ArrayList<Employee> employees) {
 		String columnHeaders[] = {"ID","First name", "Last name", "Department"};
 		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 0);
 		
-		for (int i = 0; i < searchResults.size(); i++) {
-			int employeeId = searchResults.get(i).getEmployeeId();
-			String firstName = searchResults.get(i).getFirstName();
-			String lastName = searchResults.get(i).getLastName();
-			String department = searchResults.get(i).getDepartment();
+		for (int i = 0; i < employees.size(); i++) {
+			int employeeId = employees.get(i).getEmployeeId();
+			String firstName = employees.get(i).getFirstName();
+			String lastName = employees.get(i).getLastName();
+			String department = employees.get(i).getDepartment();
 			
 			Object[] row = {employeeId, firstName, lastName, department};
 			
@@ -95,19 +95,27 @@ public class EmployeeList {
 		return tableModel;
 	}
 
-	public Employee getEmployeeById(int selectedEmployeeId) {
+	public Employee getEmployeeById(int employeeId) {
 		// Get all employees
 		ArrayList<Employee> employees = this.getAllEmployees();
 		Employee employee = null;
 		
 		for (int i = 0; i < employees.size(); i++) {
 			Employee element = employees.get(i);
-			if(element.getEmployeeId() == selectedEmployeeId) {
+			if(element.getEmployeeId() == employeeId) {
 				employee = element;
 				break;
 			}
 		}
 
 		return employee;
+	}
+	
+	public ArrayList<Employee> registerEmployee(Employee employee) {
+		// Get all employees
+		ArrayList<Employee> employees = this.getAllEmployees();
+		employees.add(employee);
+		System.out.println(employees);
+		return employees;
 	}
 }

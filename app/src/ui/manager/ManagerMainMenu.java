@@ -27,6 +27,7 @@ public class ManagerMainMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public ManagerMainMenu() {
+		setTitle("AutoWizard (Manager) - Main Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 512, 362);
 		contentPane = new JPanel();
