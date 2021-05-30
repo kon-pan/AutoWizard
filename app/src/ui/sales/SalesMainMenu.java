@@ -3,9 +3,15 @@ package ui.sales;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import models.Employee;
+import models.EmployeeList;
+import models.Item;
+import models.ItemList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JToolBar;
@@ -13,6 +19,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import javax.swing.JLayeredPane;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.CardLayout;
@@ -24,6 +33,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
 
 public class SalesMainMenu extends JFrame {
 
@@ -33,8 +43,6 @@ public class SalesMainMenu extends JFrame {
 	private JPanel history;
 	private JPanel newSale;
 	private JPanel customerSupport;
-	private JTextField searchBarStock;
-	private JTable table;
 	private JTextField searchBarHistory;
 	private JTable table_1;
 	private JTextField customerNameField;
@@ -43,6 +51,8 @@ public class SalesMainMenu extends JFrame {
 	private JTextField salespersonNameField;
 	private JTextField itemPriceField;
 	private JTextField paymentPlanField;
+	private JTable itemsList;
+	private JTextField stockSearchQueryTextField;
 	
 	
 	public void switchTabs(JPanel panel) {
@@ -102,55 +112,95 @@ public class SalesMainMenu extends JFrame {
 		);
 		layeredPane.setLayout(new CardLayout(0, 0));
 		
+		//*************************************
+		//Stock tab
+		//*************************************
 		stock = new JPanel();
 		layeredPane.add(stock, "name_1120213382907199");
+		stock.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Stock");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNewLabel.setBounds(10, 11, 133, 23);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
+		stock.add(lblNewLabel);
 		
-		searchBarStock = new JTextField();
-		searchBarStock.setColumns(10);
+		JScrollPane itemsListPanel = new JScrollPane();
+		itemsListPanel.setBounds(270, 32, 214, 264);
+		stock.add(itemsListPanel);
 		
-		JButton searchButtonStock = new JButton("Search");
+		//**************************************
+		//Create item list for Stock tab
+		//**************************************
+		ItemList il = new ItemList();
+		DefaultTableModel tableModel = il.createItemsList();
 		
-		table = new JTable();
+		itemsList = new JTable(tableModel){
+			public boolean isCellEditable(int row, int column){
+		        return false;
+		   }
+		};
+		itemsListPanel.setViewportView(itemsList);
 		
-		JTextArea textArea = new JTextArea();
-		GroupLayout gl_stock = new GroupLayout(stock);
-		gl_stock.setHorizontalGroup(
-			gl_stock.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_stock.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_stock.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_stock.createSequentialGroup()
-							.addGroup(gl_stock.createParallelGroup(Alignment.TRAILING, false)
-								.addComponent(searchBarStock, Alignment.LEADING)
-								.addComponent(lblNewLabel, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 133, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(searchButtonStock))
-						.addComponent(table, GroupLayout.PREFERRED_SIZE, 203, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-					.addComponent(textArea, GroupLayout.PREFERRED_SIZE, 234, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_stock.setVerticalGroup(
-			gl_stock.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_stock.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 23, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_stock.createParallelGroup(Alignment.LEADING)
-						.addComponent(textArea, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-						.addGroup(gl_stock.createSequentialGroup()
-							.addGroup(gl_stock.createParallelGroup(Alignment.BASELINE)
-								.addComponent(searchBarStock, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(searchButtonStock))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(table, GroupLayout.PREFERRED_SIZE, 226, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		stock.setLayout(gl_stock);
+		stockSearchQueryTextField = new JTextField();
+		stockSearchQueryTextField.setBounds(10, 78, 214, 20);
+		stock.add(stockSearchQueryTextField);
+		stockSearchQueryTextField.setColumns(10);
 		
+		JLabel lblNewLabel_11 = new JLabel("Search Inventory");
+		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_11.setBounds(10, 56, 148, 14);
+		stock.add(lblNewLabel_11);
+		
+		JButton stockSearchButton = new JButton("Search");
+		stockSearchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String searchQuery = stockSearchQueryTextField.getText();
+				ArrayList<Item> searchResults = ItemList.searchItem(searchQuery);
+				
+				System.out.println(searchResults);
+				
+				if (!searchQuery.equals("")) {
+					// Clear JTable values
+					tableModel.setRowCount(0);
+					
+					ItemList il = new ItemList();
+					DefaultTableModel tableModel = il.createItemsList(searchResults);
+
+					JTable searchResultsList = new JTable(tableModel) {
+						public boolean isCellEditable(int row, int column){
+					        return false;
+					   }
+					};
+				itemsListPanel.setViewportView(searchResultsList);		
+				}else {
+					ItemList il = new ItemList();
+					DefaultTableModel tableModel = il.createItemsList();
+					
+					itemsList = new JTable(tableModel) {
+						public boolean isCellEditable(int row, int column){
+					        return false;
+					   }
+					};
+				itemsListPanel.setViewportView(itemsList);
+				}
+			}
+		});
+		stockSearchButton.setBounds(10, 109, 89, 23);
+		stock.add(stockSearchButton);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//***********************************
+		//History tab
+		//***********************************
 		history = new JPanel();
 		layeredPane.add(history, "name_1120340773498000");
 		
