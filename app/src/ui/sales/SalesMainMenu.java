@@ -7,6 +7,7 @@ import models.Employee;
 import models.EmployeeList;
 import models.Item;
 import models.ItemList;
+import ui.manager.ManagerRegisterNewEmployee;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -17,6 +18,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.JToolBar;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLayeredPane;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -51,8 +53,12 @@ public class SalesMainMenu extends JFrame {
 	private JTextField salespersonNameField;
 	private JTextField itemPriceField;
 	private JTextField paymentPlanField;
-	private JTable itemsList;
+	public static JTable itemsList;
 	private JTextField stockSearchQueryTextField;
+	
+	public static DefaultTableModel tableModel;
+	public static ItemList il;
+	public static JScrollPane itemsListPanel;
 	
 	
 	public void switchTabs(JPanel panel) {
@@ -68,7 +74,7 @@ public class SalesMainMenu extends JFrame {
 	 */
 	public SalesMainMenu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 540, 400);
+		setBounds(100, 100, 956, 556);
 		
 		/*
 		 * Create menu bar and buttons
@@ -124,21 +130,41 @@ public class SalesMainMenu extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 24));
 		stock.add(lblNewLabel);
 		
-		JScrollPane itemsListPanel = new JScrollPane();
-		itemsListPanel.setBounds(270, 32, 214, 264);
+		itemsListPanel = new JScrollPane();
+		itemsListPanel.setBounds(10, 109, 890, 340);
 		stock.add(itemsListPanel);
 		
 		//**************************************
 		//Create item list for Stock tab
 		//**************************************
 		ItemList il = new ItemList();
-		DefaultTableModel tableModel = il.createItemsList();
+		tableModel = il.createItemsList();
 		
 		itemsList = new JTable(tableModel){
 			public boolean isCellEditable(int row, int column){
 		        return false;
 		   }
 		};
+		
+		itemsList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // If a row is double-clicked
+            	int itemId = 0;
+                if (e.getClickCount() == 2) {
+                    int selectedRowIndex = itemsList.getSelectedRow();
+                    itemId = (int) itemsList.getModel().getValueAt(selectedRowIndex, 0);
+                    try {
+    					EditItemDialog dialog = new EditItemDialog(itemId);
+    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    					dialog.setVisible(true);
+    				} catch (Exception e1) {
+    					e1.printStackTrace();
+    				}
+                    System.out.println(itemId); 
+                }
+            }
+        });
 		itemsListPanel.setViewportView(itemsList);
 		
 		stockSearchQueryTextField = new JTextField();
@@ -148,7 +174,7 @@ public class SalesMainMenu extends JFrame {
 		
 		JLabel lblNewLabel_11 = new JLabel("Search Inventory");
 		lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_11.setBounds(10, 56, 148, 14);
+		lblNewLabel_11.setBounds(10, 53, 148, 14);
 		stock.add(lblNewLabel_11);
 		
 		JButton stockSearchButton = new JButton("Search");
@@ -185,7 +211,7 @@ public class SalesMainMenu extends JFrame {
 				}
 			}
 		});
-		stockSearchButton.setBounds(10, 109, 89, 23);
+		stockSearchButton.setBounds(234, 77, 89, 21);
 		stock.add(stockSearchButton);
 		
 		

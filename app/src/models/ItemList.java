@@ -17,6 +17,33 @@ public class ItemList {
 		itemList.add(new Item(103, 300, "ThunderBolt Exhaust Tip", "Vehicle Part"));
 		itemList.add(new Item(104, 20, "BBS Windshield Sticker", "Accessory"));
 		itemList.add(new Item(105, 48000, "RX8 Mazda", "Vehicle"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
+		itemList.add(new Item(106, 1000, "Scroll Test", "Accessory"));
 	}
 	
 	public ArrayList<Item> getAllItems(){
@@ -87,5 +114,26 @@ public class ItemList {
 			}
 		}
 		return searchResults;
+	}
+	
+	public ArrayList<Item> updateItem(String itemId, String itemPrice, String itemName, String itemType) {
+		// Get employee that will be updated
+		Item item = this.getItemById(Integer.parseInt(itemId));
+		item.setItemPrice(Integer.parseInt(itemPrice));
+		item.setItemName(itemName);
+		item.setItemType(itemType);
+		
+		// Get employees list
+		ArrayList<Item> items = this.getAllItems();
+		
+		// Update previous record
+		for (int i = 0; i < items.size(); i++) {
+			Item element = items.get(i);
+			if(element.getItemId() == Integer.parseInt(itemId)) {
+				items.set(i, element);
+			}
+		}
+		
+		return items;
 	}
 }
