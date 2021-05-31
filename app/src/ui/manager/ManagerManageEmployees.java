@@ -72,6 +72,9 @@ public class ManagerManageEmployees extends JFrame {
 		        return false;
 		   }
 		};
+		
+		// Add listener to the list
+		// TODO: add below listener to separate ActionListener object (DRY)
 		empoloyeesList.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -185,6 +188,8 @@ public class ManagerManageEmployees extends JFrame {
 					   }
 					};
 					
+					// Add listener to new list
+					// TODO: add below listener to separate ActionListener object (DRY)
 					searchResultsList.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -217,6 +222,8 @@ public class ManagerManageEmployees extends JFrame {
 					   }
 					};
 					
+					// Add listener to new list
+					// TODO: add below listener to separate ActionListener object (DRY)
 					empoloyeesList.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -261,7 +268,83 @@ public class ManagerManageEmployees extends JFrame {
 				}
 			}
 		});
-		btnNewButton_2.setBounds(135, 332, 167, 51);
+		btnNewButton_2.setBounds(135, 383, 244, 51);
 		contentPane.add(btnNewButton_2);
+		
+		JButton saveChangesButton = new JButton("Save changes");
+		saveChangesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String employeeId = idTextField.getText();
+				if(employeeId != null) {
+					// Get text fields values
+					String firstName = firstNameTextField.getText();
+					String lastName = lastNameTextField.getText();
+					String department = departmentTextField.getText();
+					String dob = dobTextField.getText();
+					
+					EmployeeList el = new EmployeeList();
+					ArrayList<Employee> updatedList = el.updateEmployee(employeeId, firstName, lastName, department, dob);
+					tableModel.setRowCount(0); // make list empty
+					tableModel = el.createEmployeesList(updatedList); // Get new table model
+					
+					empoloyeesList = new JTable(tableModel) {
+						public boolean isCellEditable(int row, int column){
+					        return false;
+					   }
+					};
+					
+					// Add listener to new list
+					// TODO: add below listener to separate ActionListener object (DRY)
+					empoloyeesList.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							// Populate form fields when an employee from the list is 
+							// clicked
+							int selectedRowIndex = empoloyeesList.getSelectedRow();
+							System.out.println(selectedRowIndex);
+							
+							int selectedEmployeeId = (int) tableModel.getValueAt(selectedRowIndex, 0);
+							System.out.println(selectedEmployeeId);
+							
+							Employee employee = el.getEmployeeById(selectedEmployeeId);	
+							
+							idTextField.setText(Integer.toString(employee.getEmployeeId()));
+							firstNameTextField.setText(employee.getFirstName());
+							lastNameTextField.setText(employee.getLastName());
+							departmentTextField.setText(employee.getDepartment());
+							dobTextField.setText(employee.getDateOfBirth());
+						}
+					});
+					
+					employeesListPanel.setViewportView(empoloyeesList);
+				}	
+			}
+		});
+		saveChangesButton.setBounds(230, 221, 149, 23);
+		contentPane.add(saveChangesButton);
+		
+		JButton btnNewButton_3_1 = new JButton("Remove employee");
+		btnNewButton_3_1.setBounds(230, 252, 147, 23);
+		contentPane.add(btnNewButton_3_1);
+		
+		JButton btnNewButton_3_1_1 = new JButton("Remove multiple employees");
+		btnNewButton_3_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_3_1_1.setBounds(135, 287, 244, 37);
+		contentPane.add(btnNewButton_3_1_1);
+		
+		JButton btnNewButton_4 = new JButton("Log Out");
+		btnNewButton_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnNewButton_4.setBounds(653, 9, 89, 23);
+		contentPane.add(btnNewButton_4);
+		
+		JButton btnNewButton_4_1 = new JButton("Main Menu");
+		btnNewButton_4_1.setBounds(10, 445, 89, 23);
+		contentPane.add(btnNewButton_4_1);
 	}
 }

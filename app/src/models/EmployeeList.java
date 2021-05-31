@@ -118,4 +118,26 @@ public class EmployeeList {
 		System.out.println(employees);
 		return employees;
 	}
+	
+	public ArrayList<Employee> updateEmployee(String id, String firstName, String lastName, String department, String dob) {
+		// Get employee that will be updated
+		Employee employee = this.getEmployeeById(Integer.parseInt(id));
+		employee.setFirstName(firstName);
+		employee.setLastName(lastName);
+		employee.setDepartment(department);
+		employee.setDateOfBirth(dob);
+		
+		// Get employees list
+		ArrayList<Employee> employees = this.getAllEmployees();
+		
+		// Update previous record
+		for (int i = 0; i < employees.size(); i++) {
+			Employee element = employees.get(i);
+			if(element.getEmployeeId() == Integer.parseInt(id)) {
+				employees.set(i, element);
+			}
+		}
+		
+		return employees;
+	}
 }
