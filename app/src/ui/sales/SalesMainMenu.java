@@ -7,6 +7,8 @@ import models.Employee;
 import models.EmployeeList;
 import models.Item;
 import models.ItemList;
+import models.Sale;
+import models.SalesHistory;
 import ui.manager.ManagerRegisterNewEmployee;
 
 import javax.swing.JFrame;
@@ -45,8 +47,7 @@ public class SalesMainMenu extends JFrame {
 	private JPanel history;
 	private JPanel newSale;
 	private JPanel customerSupport;
-	private JTextField searchBarHistory;
-	private JTable table_1;
+	private JTextField historySearchQueryTextField;
 	private JTextField customerNameField;
 	private JTextField dateOfSaleField;
 	private JTextField itemNameField;
@@ -54,11 +55,14 @@ public class SalesMainMenu extends JFrame {
 	private JTextField itemPriceField;
 	private JTextField paymentPlanField;
 	public static JTable itemsList;
+	public static JTable salesHistory;
 	private JTextField stockSearchQueryTextField;
 	
 	public static DefaultTableModel tableModel;
+	public static DefaultTableModel tableModelHistory;
 	public static ItemList il;
 	public static JScrollPane itemsListPanel;
+	public static JScrollPane salesHistoryPanel;
 	
 	
 	public void switchTabs(JPanel panel) {
@@ -117,6 +121,10 @@ public class SalesMainMenu extends JFrame {
 					.addContainerGap())
 		);
 		layeredPane.setLayout(new CardLayout(0, 0));
+		
+		
+		
+		
 		
 		//*************************************
 		//Stock tab
@@ -197,6 +205,26 @@ public class SalesMainMenu extends JFrame {
 					        return false;
 					   }
 					};
+					
+					searchResultsList.addMouseListener(new MouseAdapter() {
+			            @Override
+			            public void mouseClicked(MouseEvent e) {
+			                // If a row is double-clicked
+			            	int itemId = 0;
+			                if (e.getClickCount() == 2) {
+			                    int selectedRowIndex = searchResultsList.getSelectedRow();
+			                    itemId = (int) searchResultsList.getModel().getValueAt(selectedRowIndex, 0);
+			                    try {
+			    					EditItemDialog dialog = new EditItemDialog(itemId);
+			    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			    					dialog.setVisible(true);
+			    				} catch (Exception e1) {
+			    					e1.printStackTrace();
+			    				}
+			                    System.out.println(itemId); 
+			                }
+			            }
+			        });
 				itemsListPanel.setViewportView(searchResultsList);		
 				}else {
 					ItemList il = new ItemList();
@@ -207,6 +235,26 @@ public class SalesMainMenu extends JFrame {
 					        return false;
 					   }
 					};
+					
+					itemsList.addMouseListener(new MouseAdapter() {
+			            @Override
+			            public void mouseClicked(MouseEvent e) {
+			                // If a row is double-clicked
+			            	int itemId = 0;
+			                if (e.getClickCount() == 2) {
+			                    int selectedRowIndex = itemsList.getSelectedRow();
+			                    itemId = (int) itemsList.getModel().getValueAt(selectedRowIndex, 0);
+			                    try {
+			    					EditItemDialog dialog = new EditItemDialog(itemId);
+			    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			    					dialog.setVisible(true);
+			    				} catch (Exception e1) {
+			    					e1.printStackTrace();
+			    				}
+			                    System.out.println(itemId); 
+			                }
+			            }
+			        });
 				itemsListPanel.setViewportView(itemsList);
 				}
 			}
@@ -231,51 +279,84 @@ public class SalesMainMenu extends JFrame {
 		layeredPane.add(history, "name_1120340773498000");
 		
 		JLabel lblNewLabel_1 = new JLabel("History");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNewLabel_1.setBounds(10, 11, 98, 29);
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 24));
+		history.add(lblNewLabel_1);
 		
-		searchBarHistory = new JTextField();
-		searchBarHistory.setColumns(10);
+		salesHistoryPanel = new JScrollPane();
+		salesHistoryPanel.setBounds(10, 119, 890, 330);
+		history.add(salesHistoryPanel);
 		
-		JButton searchButtonHistory = new JButton("Search");
+		//**********************************
+		//Create Sales History List
+		//**********************************
 		
-		table_1 = new JTable();
+		SalesHistory sh = new SalesHistory();
+		tableModelHistory = sh.createSalesList();
 		
-		JTextArea textArea_1 = new JTextArea();
-		GroupLayout gl_history = new GroupLayout(history);
-		gl_history.setHorizontalGroup(
-			gl_history.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_history.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_history.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_history.createSequentialGroup()
-							.addGroup(gl_history.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_history.createSequentialGroup()
-									.addComponent(searchBarHistory, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(searchButtonHistory))
-								.addComponent(table_1, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
-							.addGap(18)
-							.addComponent(textArea_1, GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE))
-						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 84, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
-		gl_history.setVerticalGroup(
-			gl_history.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_history.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel_1)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_history.createParallelGroup(Alignment.LEADING)
-						.addComponent(textArea_1, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-						.addGroup(gl_history.createSequentialGroup()
-							.addGroup(gl_history.createParallelGroup(Alignment.BASELINE)
-								.addComponent(searchBarHistory, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(searchButtonHistory))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(table_1, GroupLayout.PREFERRED_SIZE, 221, GroupLayout.PREFERRED_SIZE)))
-					.addContainerGap())
-		);
-		history.setLayout(gl_history);
+		salesHistory = new JTable(tableModelHistory){
+			public boolean isCellEditable(int row, int column){
+		        return false;
+		   }
+		};
+		salesHistoryPanel.setViewportView(salesHistory);
+		
+		
+		JLabel lblNewLabel_12 = new JLabel("Search Sales History");
+		lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_12.setBounds(10, 55, 205, 21);
+		history.add(lblNewLabel_12);
+		
+		historySearchQueryTextField = new JTextField();
+		historySearchQueryTextField.setBounds(10, 87, 267, 21);
+		history.add(historySearchQueryTextField);
+		historySearchQueryTextField.setColumns(10);
+		
+		JButton historySearchButton = new JButton("Search");
+		historySearchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e2) {
+				String searchQuery = historySearchQueryTextField.getText();
+				ArrayList<Sale> searchResults = SalesHistory.searchSale(searchQuery);
+				
+				System.out.println(searchResults);
+				
+				if (!searchQuery.equals("")) {
+					// Clear JTable values
+					tableModelHistory.setRowCount(0);
+					
+					SalesHistory sh = new SalesHistory();
+					DefaultTableModel tableModel = sh.createSalesList(searchResults);
+
+					JTable searchResultsList = new JTable(tableModel) {
+						public boolean isCellEditable(int row, int column){
+					        return false;
+					   }
+					};
+				salesHistoryPanel.setViewportView(searchResultsList);		
+				}else {
+					SalesHistory sh = new SalesHistory();
+					DefaultTableModel tableModel = sh.createSalesList();
+					
+					salesHistory = new JTable(tableModel) {
+						public boolean isCellEditable(int row, int column){
+					        return false;
+					   }
+					};
+				salesHistoryPanel.setViewportView(salesHistory);
+				}
+			}
+		});
+		historySearchButton.setBounds(287, 87, 98, 21);
+		history.setLayout(null);
+		history.add(historySearchButton);
+		
+		
+		
+		
+		
+		//**************************
+		//New Sale
+		//**************************
 		
 		newSale = new JPanel();
 		layeredPane.add(newSale, "name_1120342745378900");
@@ -319,7 +400,7 @@ public class SalesMainMenu extends JFrame {
 		JButton submitSaleButton = new JButton("Submit");
 		GroupLayout gl_newSale = new GroupLayout(newSale);
 		gl_newSale.setHorizontalGroup(
-			gl_newSale.createParallelGroup(Alignment.LEADING)
+			gl_newSale.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_newSale.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
@@ -349,10 +430,10 @@ public class SalesMainMenu extends JFrame {
 							.addComponent(paymentPlanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(lblNewLabel_10)))
-					.addContainerGap(318, Short.MAX_VALUE))
-				.addGroup(Alignment.TRAILING, gl_newSale.createSequentialGroup()
-					.addContainerGap(395, Short.MAX_VALUE)
-					.addComponent(submitSaleButton)
+					.addContainerGap(734, Short.MAX_VALUE))
+				.addGroup(gl_newSale.createSequentialGroup()
+					.addContainerGap(810, Short.MAX_VALUE)
+					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		gl_newSale.setVerticalGroup(
@@ -386,8 +467,8 @@ public class SalesMainMenu extends JFrame {
 					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
 						.addComponent(paymentPlanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_10))
-					.addPreferredGap(ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
-					.addComponent(submitSaleButton)
+					.addPreferredGap(ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
 		newSale.setLayout(gl_newSale);
