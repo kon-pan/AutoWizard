@@ -40,8 +40,8 @@ public class ManagerMainMenu extends JFrame {
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		contentPane.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("Manage Employees");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnManageEmployees = new JButton("Manage Employees");
+		btnManageEmployees.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					Component component = (Component) e.getSource();
@@ -54,10 +54,20 @@ public class ManagerMainMenu extends JFrame {
 				}
 			}
 		});
-		btnNewButton.setBounds(10, 61, 160, 120);
-		contentPane.add(btnNewButton);
+		btnManageEmployees.setBounds(10, 61, 160, 120);
+		contentPane.add(btnManageEmployees);
 		
 		JButton btnManageStock = new JButton("Manage Stock");
+		btnManageStock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					ManagerManageStock frame = new ManagerManageStock();
+					frame.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnManageStock.setBounds(10, 192, 160, 120);
 		contentPane.add(btnManageStock);
 		
