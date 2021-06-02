@@ -16,22 +16,6 @@ public class SalesHistory {
 		salesHistory.add(new Sale(103, "Nick", "23/05/2021", "BBS RW2 Tyre Rims", "Stylianos", 400, "Total Sum"));
 		salesHistory.add(new Sale(104, "Ntinos", "27/05/2021", "RX8 Mazda", "Stylianos", 48000, "Total Sum"));
 		salesHistory.add(new Sale(105, "Ntinos", "07/06/2021", "BBS Windshield Sticker", "Stylianos", 4000, "Total Sum"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
-		salesHistory.add(new Sale(106, "Scroll", "18/07/2021", "Test", "Scroll", 4000, "Test"));
 	}
 	
 	public ArrayList<Sale> getAllSales(){
@@ -75,6 +59,23 @@ public class SalesHistory {
 		return tableModel;
 	}
 	
+//	public DefaultTableModel createSalesList(ArrayList<Sale> sales) {
+//		String columnHeaders[] = {"ID", "Customer Name", "Date of Sale", "Sold Item", "Salesperson", "Sale Price", "Payment Plan"};
+//		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 0);
+//		
+//		for (int i = 0; i < employees.size(); i++) {
+//			int employeeId = employees.get(i).getEmployeeId();
+//			String firstName = employees.get(i).getFirstName();
+//			String lastName = employees.get(i).getLastName();
+//			String department = employees.get(i).getDepartment();
+//			
+//			Object[] row = {employeeId, firstName, lastName, department};
+//			
+//			tableModel.addRow(row);
+//		}
+//		return tableModel;
+//	}
+	
 	public DefaultTableModel createSalesList(ArrayList<Sale> searchResults) {
 		String columnHeaders[] = {"ID", "Customer Name", "Date of Sale", "Sold Item", "Salesperson", "Sale Price", "Payment Plan"};
 		DefaultTableModel tableModel = new DefaultTableModel(columnHeaders, 0);
@@ -109,5 +110,13 @@ public class SalesHistory {
 			}
 		}
 		return searchResults;
+	}
+	
+	public ArrayList<Sale> registerSale(Sale sale) {
+		// Get all employees
+		ArrayList<Sale> sales = this.getAllSales();
+		sales.add(sale);
+		System.out.println(sales);
+		return sales;
 	}
 }

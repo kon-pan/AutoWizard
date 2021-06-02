@@ -48,12 +48,12 @@ public class SalesMainMenu extends JFrame {
 	private JPanel newSale;
 	private JPanel customerSupport;
 	private JTextField historySearchQueryTextField;
-	private JTextField customerNameField;
-	private JTextField dateOfSaleField;
-	private JTextField itemNameField;
-	private JTextField salespersonNameField;
-	private JTextField itemPriceField;
-	private JTextField paymentPlanField;
+	private JTextField customerNameTextField;
+	private JTextField dateOfSaleTextField;
+	private JTextField soldItemNameTextField;
+	private JTextField salespersonNameTextField;
+	private JTextField priceOfSaleTextField;
+	private JTextField paymentPlanTextField;
 	public static JTable itemsList;
 	public static JTable salesHistory;
 	private JTextField stockSearchQueryTextField;
@@ -63,6 +63,7 @@ public class SalesMainMenu extends JFrame {
 	public static ItemList il;
 	public static JScrollPane itemsListPanel;
 	public static JScrollPane salesHistoryPanel;
+	private JTextField saleIdTextField;
 	
 	
 	public void switchTabs(JPanel panel) {
@@ -362,112 +363,153 @@ public class SalesMainMenu extends JFrame {
 		layeredPane.add(newSale, "name_1120342745378900");
 		
 		JLabel lblNewLabel_2 = new JLabel("NewSale");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 24));
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 24));
 		
-		customerNameField = new JTextField();
-		customerNameField.setColumns(10);
+		saleIdTextField = new JTextField();
+		saleIdTextField.setColumns(10);
 		
-		JLabel lblNewLabel_4 = new JLabel("Customer Name");
+		customerNameTextField = new JTextField();
+		customerNameTextField.setColumns(10);
 		
 		JLabel lblNewLabel_5 = new JLabel("Sale Details");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
-		dateOfSaleField = new JTextField();
-		dateOfSaleField.setColumns(10);
+		dateOfSaleTextField = new JTextField();
+		dateOfSaleTextField.setColumns(10);
 		
-		JLabel lblNewLabel_6 = new JLabel("Date of Sale");
+		soldItemNameTextField = new JTextField();
+		soldItemNameTextField.setColumns(10);
 		
-		itemNameField = new JTextField();
-		itemNameField.setColumns(10);
+		salespersonNameTextField = new JTextField();
+		salespersonNameTextField.setColumns(10);
 		
-		JLabel lblNewLabel_7 = new JLabel("Item Name");
+		priceOfSaleTextField = new JTextField();
+		priceOfSaleTextField.setColumns(10);
 		
-		salespersonNameField = new JTextField();
-		salespersonNameField.setColumns(10);
-		
-		JLabel lblNewLabel_8 = new JLabel("Salesperson");
-		
-		itemPriceField = new JTextField();
-		itemPriceField.setColumns(10);
-		
-		JLabel lblNewLabel_9 = new JLabel("Price");
-		
-		paymentPlanField = new JTextField();
-		paymentPlanField.setColumns(10);
-		
-		JLabel lblNewLabel_10 = new JLabel("Payment plan");
+		paymentPlanTextField = new JTextField();
+		paymentPlanTextField.setColumns(10);
 		
 		JButton submitSaleButton = new JButton("Submit");
+		submitSaleButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int saleId = Integer.parseInt(saleIdTextField.getText());
+				String customerName = customerNameTextField.getText();
+				String dateOfSale = dateOfSaleTextField.getText();
+				String soldItemName = soldItemNameTextField.getText();
+				String salepersonName = salespersonNameTextField.getText();
+				int priceOfSale = Integer.parseInt(priceOfSaleTextField.getText());
+				String paymentPlan = paymentPlanTextField.getText();
+				
+				SalesHistory sh = new SalesHistory();
+				Sale sale = new Sale(saleId, customerName, dateOfSale, soldItemName, salepersonName, priceOfSale, paymentPlan);
+				ArrayList<Sale> sales = sh.registerSale(sale);
+				
+				tableModelHistory.setRowCount(0);
+				tableModelHistory = sh.createSalesList(sales);
+				
+				salesHistory = new JTable(tableModelHistory){
+					public boolean isCellEditable(int row, int column){
+				        return false;
+				   }
+				};
+				salesHistoryPanel.setViewportView(salesHistory);
+				switchTabs(history);
+			}
+		});
+		
+		JLabel lblNewLabel_4 = new JLabel("ID");
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_6 = new JLabel("Customer Name");
+		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_7 = new JLabel("Date of Sale");
+		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_8 = new JLabel("Item Name");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_9 = new JLabel("Salesperson");
+		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_10 = new JLabel("Price");
+		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JLabel lblNewLabel_13 = new JLabel("Payment Plan");
+		lblNewLabel_13.setFont(new Font("Tahoma", Font.BOLD, 16));
 		GroupLayout gl_newSale = new GroupLayout(newSale);
 		gl_newSale.setHorizontalGroup(
 			gl_newSale.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(customerNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_4))
-						.addComponent(lblNewLabel_5)
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(dateOfSaleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_6))
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(itemNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_7))
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(salespersonNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_8))
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(itemPriceField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_9))
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(paymentPlanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblNewLabel_10)))
-					.addContainerGap(734, Short.MAX_VALUE))
-				.addGroup(gl_newSale.createSequentialGroup()
 					.addContainerGap(810, Short.MAX_VALUE)
 					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
+				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(779, Short.MAX_VALUE))
+				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(793, Short.MAX_VALUE))
+				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(saleIdTextField, Alignment.LEADING)
+						.addComponent(customerNameTextField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+						.addComponent(dateOfSaleTextField, Alignment.LEADING)
+						.addComponent(soldItemNameTextField, Alignment.LEADING)
+						.addComponent(salespersonNameTextField, Alignment.LEADING)
+						.addComponent(priceOfSaleTextField, Alignment.LEADING)
+						.addComponent(paymentPlanTextField, Alignment.LEADING))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_4)
+						.addComponent(lblNewLabel_6)
+						.addComponent(lblNewLabel_7)
+						.addComponent(lblNewLabel_8)
+						.addComponent(lblNewLabel_9)
+						.addComponent(lblNewLabel_10)
+						.addComponent(lblNewLabel_13))
+					.addContainerGap(545, Short.MAX_VALUE))
 		);
 		gl_newSale.setVerticalGroup(
 			gl_newSale.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_newSale.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblNewLabel_2)
-					.addGap(9)
-					.addComponent(lblNewLabel_5)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(customerNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_4))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(dateOfSaleField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblNewLabel_4)
+						.addGroup(gl_newSale.createSequentialGroup()
+							.addComponent(lblNewLabel_2)
+							.addGap(27)
+							.addComponent(lblNewLabel_5)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(saleIdTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+					.addGap(8)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(customerNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_6))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(itemNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(8)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(dateOfSaleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_7))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(salespersonNameField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(soldItemNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_8))
-					.addGap(18)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(itemPriceField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_9))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(paymentPlanField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(salespersonNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_9))
+					.addGap(18)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(priceOfSaleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_10))
-					.addPreferredGap(ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
+						.addComponent(paymentPlanTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_13))
+					.addPreferredGap(ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
 					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);
