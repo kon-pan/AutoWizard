@@ -7,6 +7,7 @@ package ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -31,6 +32,7 @@ import ui.manager.ManagerMainMenu;
 import ui.mechanic.MechanicMainMenu;
 import ui.sales.SalesMainMenu;
 import java.awt.Color;
+import javax.swing.ImageIcon;
 
 public class Login extends JFrame {
 
@@ -44,13 +46,14 @@ public class Login extends JFrame {
 	public Login() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 500, 320);
+		setBounds(100, 100, 625, 475);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 
 		JPanel panel1 = new JPanel();
+		panel1.setBackground(Color.WHITE);
 		contentPane.add(panel1, BorderLayout.NORTH);
 
 		JLabel lbl1 = new JLabel("Enter your login credentials");
@@ -59,33 +62,34 @@ public class Login extends JFrame {
 		panel1.add(lbl1);
 
 		JPanel panel2 = new JPanel();
+		panel2.setBackground(Color.WHITE);
 		contentPane.add(panel2, BorderLayout.CENTER);
 
 		JLabel lbl2 = new JLabel("E-mail");
-		lbl2.setBounds(110, 55, 36, 15);
+		lbl2.setBounds(148, 222, 36, 15);
 		lbl2.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		emailTextField = new JTextField();
-		emailTextField.setBounds(156, 53, 237, 20);
+		emailTextField.setBounds(206, 220, 237, 20);
 		emailTextField.setColumns(10);
 
 		passwordTextField = new JPasswordField();
-		passwordTextField.setBounds(156, 91, 237, 20);
+		passwordTextField.setBounds(206, 264, 237, 20);
 		passwordTextField.setColumns(10);
 
 		JLabel lbl3 = new JLabel("Password");
-		lbl3.setBounds(74, 93, 72, 15);
+		lbl3.setBounds(112, 266, 72, 15);
 		lbl3.setHorizontalAlignment(SwingConstants.RIGHT);
 		lbl3.setFont(new Font("Tahoma", Font.BOLD, 12));
 
 		JLabel errorMsgLabel = new JLabel("Employee with the following email address does not exist:");
-		errorMsgLabel.setBounds(44, 164, 397, 79);
+		errorMsgLabel.setBounds(46, 319, 397, 79);
 		errorMsgLabel.setForeground(Color.RED);
 		errorMsgLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
 		errorMsgLabel.setVisible(false);
 
 		JButton loginBtn = new JButton("Login");
-		loginBtn.setBounds(323, 122, 70, 31);
+		loginBtn.setBounds(448, 298, 70, 31);
 		loginBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String email = emailTextField.getText();
@@ -167,5 +171,13 @@ public class Login extends JFrame {
 		panel2.add(passwordTextField);
 		panel2.add(emailTextField);
 		panel2.add(loginBtn);
+		
+		lbl1 = new JLabel("");
+
+		Image img = new ImageIcon(this.getClass().getResource("/login1.png")).getImage();
+		lbl1.setIcon(new ImageIcon(img));
+
+		lbl1.setBounds(148, 11, 328, 200);
+		panel2.add(lbl1);
 	}
 }

@@ -2,6 +2,7 @@ package ui.mechanic;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Image;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -30,7 +31,7 @@ public class MechanicMainMenu extends JFrame {
 	 */
 	public MechanicMainMenu() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 625, 475);
+		setBounds(100, 100, 650, 500);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -92,9 +93,10 @@ public class MechanicMainMenu extends JFrame {
 		JMenuItem mntmNewMenuItem_3 = new JMenuItem("Change Password");
 		mnNewMenu.add(mntmNewMenuItem_3);
 		
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\\u0399\u03C9\u03AC\u03BD\u03BD\u03B1\\Desktop\\\u03A3\u03C7\u03BF\u03BB\u03AE\\4o \u0388\u03C4\u03BF\u03C2\\8\u03BF \u0395\u03BE\u03AC\u03BC\u03B7\u03BD\u03BF\\\u03A4\u03B5\u03C7\u03BD\u03BF\u03BB\u03BF\u03B3\u03AF\u03B1 \u039B\u03BF\u03B3\u03B9\u03C3\u03BC\u03B9\u03BA\u03BF\u03CD\\istockphoto-1190679635-612x612.jpg"));
-		contentPane.add(lblNewLabel, BorderLayout.CENTER);
+		JLabel lbl1 = new JLabel("");
+		Image img = new ImageIcon(this.getClass().getResource("/mec1.jpg")).getImage().getScaledInstance(650,500, Image.SCALE_DEFAULT)	;
+		lbl1.setIcon(new ImageIcon(img));
+		contentPane.add(lbl1, BorderLayout.CENTER);
 	}
 
 }
