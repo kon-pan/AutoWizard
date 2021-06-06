@@ -14,6 +14,7 @@ import java.util.List;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -27,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import models.Employee;
 import models.EmployeeList;
 import ui.manager.ManagerMainMenu;
+import ui.mechanic.MechanicMainMenu;
 import ui.sales.SalesMainMenu;
 import java.awt.Color;
 
@@ -133,6 +135,17 @@ public class Login extends JFrame {
 						case "Mechanic":
 							// Render Repairs main window
 							System.out.println(department);
+							
+							// Close current window
+							currentFrame.setVisible(false);
+
+							try {
+								MechanicMainMenu frame = new MechanicMainMenu();
+								frame.setVisible(true);
+							} catch (Exception e1) {
+								e1.printStackTrace();
+							}
+							
 							break;
 						default:
 							// code block

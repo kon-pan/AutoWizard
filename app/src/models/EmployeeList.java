@@ -25,8 +25,8 @@ public class EmployeeList {
 				1043895, "kpanos@email.com", "Manager", "password"));
 		employeesList.add(new Employee("17/09/1998", "Stylianos", "Avlakiotis", "EB 125676", "16/07/2019", "12651234",
 				1046292, "avlakiotis@email.com", "Sales", "password"));
-		employeesList.add(new Employee("28/09/1992", "Konstantinos", "Papadopoulos", "AB 123456", "16/07/2019", "87651234",
-				3653895, "kpanos@email.com", "Manager", "password"));
+		employeesList.add(new Employee("28/09/1992", "Ioanna", "Sotiropoulou", "AB 123456", "16/07/2019", "87651234",
+				3653895, "ioannas@email.com", "Mechanic", "password"));
 	}
 
 	// This function emulates a call to the database
