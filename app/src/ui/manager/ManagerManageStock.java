@@ -27,17 +27,22 @@ import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import javax.swing.border.LineBorder;
+import java.awt.Color;
+import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
+import java.awt.GridLayout;
 
 public class ManagerManageStock extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
 	private JTable itemListTable;
 	public static DefaultTableModel tableModel;
 	private JTextField itemIdTextField;
 	private JTextField textField_1;
 	private JTextField textField_2;
 	private JTextField txtQuantity;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -54,12 +59,115 @@ public class ManagerManageStock extends JFrame {
 	 * Create the frame.
 	 */
 	public ManagerManageStock() {
+		setTitle("AutoWizard (Manager) - Manage Stock");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 774, 525);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBounds(10, 145, 284, 296);
+		contentPane.add(layeredPane);
+
+		JPanel editItemPanel = new JPanel();
+		
+		// Panel border styling
+		TitledBorder border = new TitledBorder(null, "Edit Item", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahome", Font.BOLD, 14));
+		
+		editItemPanel.setBorder(border);
+		editItemPanel.setBounds(0, 0, 284, 296);
+		layeredPane.add(editItemPanel);
+		editItemPanel.setLayout(null);
+		editItemPanel.setVisible(false);
+
+		JLabel lblNewLabel_4 = new JLabel("ID");
+		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_4.setBounds(10, 34, 67, 14);
+		editItemPanel.add(lblNewLabel_4);
+
+		itemIdTextField = new JTextField();
+		itemIdTextField.setEditable(false);
+		itemIdTextField.setBounds(87, 31, 177, 20);
+		editItemPanel.add(itemIdTextField);
+		itemIdTextField.setColumns(10);
+
+		JLabel lblNewLabel_4_1 = new JLabel("Title");
+		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_4_1.setBounds(10, 62, 67, 14);
+		editItemPanel.add(lblNewLabel_4_1);
+
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(87, 59, 177, 20);
+		editItemPanel.add(textField_1);
+
+		JLabel lblNewLabel_4_1_1 = new JLabel("Price");
+		lblNewLabel_4_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_4_1_1.setBounds(10, 90, 67, 14);
+		editItemPanel.add(lblNewLabel_4_1_1);
+
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(87, 87, 177, 20);
+		editItemPanel.add(textField_2);
+
+		JLabel lblNewLabel_4_1_1_1 = new JLabel("Category");
+		lblNewLabel_4_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_4_1_1_1.setBounds(10, 118, 67, 14);
+		editItemPanel.add(lblNewLabel_4_1_1_1);
+
+		JLabel lblNewLabel_4_1_1_1_1 = new JLabel("Quantity");
+		lblNewLabel_4_1_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_4_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_4_1_1_1_1.setBounds(10, 146, 67, 14);
+		editItemPanel.add(lblNewLabel_4_1_1_1_1);
+
+		txtQuantity = new JTextField();
+		txtQuantity.setColumns(10);
+		txtQuantity.setBounds(87, 143, 177, 20);
+		editItemPanel.add(txtQuantity);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(87, 115, 177, 22);
+		editItemPanel.add(comboBox);
+
+		JLabel lblNewLabel_5 = new JLabel("Supplied from:");
+		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 11));
+		lblNewLabel_5.setBounds(10, 242, 81, 14);
+		editItemPanel.add(lblNewLabel_5);
+
+		JLabel lblNewLabel_6 = new JLabel("<Supplier Name>");
+		lblNewLabel_6.setBounds(97, 242, 177, 14);
+		editItemPanel.add(lblNewLabel_6);
+
+		JButton btnNewButton_2 = new JButton("Save");
+		btnNewButton_2.setBounds(192, 174, 72, 23);
+		editItemPanel.add(btnNewButton_2);
+
+		JButton btnNewButton_2_1 = new JButton("Remove");
+		btnNewButton_2_1.setBounds(87, 174, 89, 23);
+		editItemPanel.add(btnNewButton_2_1);
+
+		JButton btnNewButton_3 = new JButton("View supplier info");
+		btnNewButton_3.setBounds(87, 262, 133, 23);
+		editItemPanel.add(btnNewButton_3);
+
+		JPanel messagePanel = new JPanel();
+		messagePanel.setBounds(0, 0, 284, 296);
+		layeredPane.add(messagePanel);
+		messagePanel.setLayout(new BorderLayout(0, 0));
+
+		JLabel lblNewLabel_2 = new JLabel(
+				"<html>Click an item from the list on the right to edit or remove it.</html>");
+		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
+		messagePanel.add(lblNewLabel_2, BorderLayout.CENTER);
 
 		JLabel lblNewLabel = new JLabel("Manage Stock");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -75,22 +183,8 @@ public class ManagerManageStock extends JFrame {
 		contentPane.add(btnLogOut);
 
 		JScrollPane itemListScrollPane = new JScrollPane();
-		itemListScrollPane.setBounds(304, 80, 444, 364);
+		itemListScrollPane.setBounds(304, 71, 444, 370);
 		contentPane.add(itemListScrollPane);
-
-		JLabel lblNewLabel_1 = new JLabel("Search stock");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1.setBounds(10, 55, 89, 14);
-		contentPane.add(lblNewLabel_1);
-
-		textField = new JTextField();
-		textField.setBounds(10, 80, 284, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
-
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(204, 106, 89, 23);
-		contentPane.add(btnSearch);
 
 		JButton btnExportList = new JButton("Export list...");
 		btnExportList.addActionListener(new ActionListener() {
@@ -116,106 +210,6 @@ public class ManagerManageStock extends JFrame {
 		addNewItemButton.setBounds(515, 452, 121, 23);
 		contentPane.add(addNewItemButton);
 
-		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(10, 145, 284, 296);
-		contentPane.add(layeredPane);
-
-		JPanel messagePanel = new JPanel();
-		messagePanel.setBounds(0, 0, 284, 296);
-		layeredPane.add(messagePanel);
-		messagePanel.setLayout(new BorderLayout(0, 0));
-
-		JLabel lblNewLabel_2 = new JLabel(
-				"<html>Click an item from the list on the right to edit or remove it.</html>");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		messagePanel.add(lblNewLabel_2, BorderLayout.CENTER);
-
-		JPanel editItemPanel = new JPanel();
-		editItemPanel.setBounds(0, 0, 284, 296);
-		layeredPane.add(editItemPanel);
-		editItemPanel.setLayout(null);
-
-		JLabel lblNewLabel_3 = new JLabel("Edit item");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_3.setBounds(10, 11, 96, 14);
-		editItemPanel.add(lblNewLabel_3);
-
-		JLabel lblNewLabel_4 = new JLabel("ID");
-		lblNewLabel_4.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_4.setBounds(10, 36, 77, 14);
-		editItemPanel.add(lblNewLabel_4);
-
-		itemIdTextField = new JTextField();
-		itemIdTextField.setEditable(false);
-		itemIdTextField.setBounds(97, 33, 177, 20);
-		editItemPanel.add(itemIdTextField);
-		itemIdTextField.setColumns(10);
-
-		JLabel lblNewLabel_4_1 = new JLabel("Title");
-		lblNewLabel_4_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_4_1.setBounds(10, 64, 77, 14);
-		editItemPanel.add(lblNewLabel_4_1);
-
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(97, 61, 177, 20);
-		editItemPanel.add(textField_1);
-
-		JLabel lblNewLabel_4_1_1 = new JLabel("Price");
-		lblNewLabel_4_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_4_1_1.setBounds(10, 92, 77, 14);
-		editItemPanel.add(lblNewLabel_4_1_1);
-
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(97, 89, 177, 20);
-		editItemPanel.add(textField_2);
-
-		JLabel lblNewLabel_4_1_1_1 = new JLabel("Category");
-		lblNewLabel_4_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_4_1_1_1.setBounds(10, 120, 77, 14);
-		editItemPanel.add(lblNewLabel_4_1_1_1);
-
-		JLabel lblNewLabel_4_1_1_1_1 = new JLabel("Quantity");
-		lblNewLabel_4_1_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblNewLabel_4_1_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		lblNewLabel_4_1_1_1_1.setBounds(10, 148, 77, 14);
-		editItemPanel.add(lblNewLabel_4_1_1_1_1);
-
-		txtQuantity = new JTextField();
-		txtQuantity.setColumns(10);
-		txtQuantity.setBounds(97, 145, 177, 20);
-		editItemPanel.add(txtQuantity);
-
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(97, 117, 177, 22);
-		editItemPanel.add(comboBox);
-
-		JLabel lblNewLabel_5 = new JLabel("Supplied from:");
-		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 11));
-		lblNewLabel_5.setBounds(10, 242, 81, 14);
-		editItemPanel.add(lblNewLabel_5);
-
-		JLabel lblNewLabel_6 = new JLabel("<Supplier Name>");
-		lblNewLabel_6.setBounds(97, 242, 177, 14);
-		editItemPanel.add(lblNewLabel_6);
-
-		JButton btnNewButton_2 = new JButton("Save");
-		btnNewButton_2.setBounds(202, 176, 72, 23);
-		editItemPanel.add(btnNewButton_2);
-
-		JButton btnNewButton_2_1 = new JButton("Remove");
-		btnNewButton_2_1.setBounds(97, 176, 89, 23);
-		editItemPanel.add(btnNewButton_2_1);
-
-		JButton btnNewButton_3 = new JButton("View supplier info");
-		btnNewButton_3.setBounds(97, 262, 115, 23);
-		editItemPanel.add(btnNewButton_3);
-
 		// Create items list
 		ItemList il = new ItemList();
 		tableModel = il.createItemsList();
@@ -227,6 +221,26 @@ public class ManagerManageStock extends JFrame {
 		};
 
 		itemListScrollPane.setViewportView(itemListTable);
+		
+		JPanel searchPanel = new JPanel();
+		
+		// Panel border styling
+		border = new TitledBorder(null, "Search stock", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahome", Font.BOLD, 14));
+		
+		searchPanel.setBorder(border);
+		searchPanel.setBounds(10, 65, 284, 78);
+		contentPane.add(searchPanel);
+		searchPanel.setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(10, 21, 264, 20);
+		searchPanel.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnNewButton_1 = new JButton("Search");
+		btnNewButton_1.setBounds(185, 44, 89, 23);
+		searchPanel.add(btnNewButton_1);
 
 		// Action listener for clicking a table row
 		itemListTable.addMouseListener(new MouseAdapter() {
@@ -238,6 +252,7 @@ public class ManagerManageStock extends JFrame {
 				layeredPane.add(editItemPanel);
 				layeredPane.repaint();
 				layeredPane.revalidate();
+				editItemPanel.setVisible(true);
 
 				int selectedRowIndex = itemListTable.getSelectedRow();
 				int itemId = (int) itemListTable.getModel().getValueAt(selectedRowIndex, 0);
