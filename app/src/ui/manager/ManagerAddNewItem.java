@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTabbedPane;
@@ -21,6 +22,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JRadioButton;
+import javax.swing.JLayeredPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.CardLayout;
 
 public class ManagerAddNewItem extends JDialog {
 	private JTextField textField;
@@ -29,19 +34,9 @@ public class ManagerAddNewItem extends JDialog {
 	private JTextField textField_3;
 	private JTextField textField_4;
 	private JTextField textField_5;
-
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		try {
-//			ManagerAddNewItem dialog = new ManagerAddNewItem();
-//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-//			dialog.setVisible(true);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	private JTextField textField_6;
+	private JTextField textField_7;
+	private JTextField textField_8;
 
 	/**
 	 * Create the dialog.
@@ -189,6 +184,153 @@ public class ManagerAddNewItem extends JDialog {
 		JButton btnNewButton_2 = new JButton("Add vehicle part");
 		btnNewButton_2.setBounds(468, 292, 138, 23);
 		panel_1.add(btnNewButton_2);
+		
+		JLabel lblNewLabel_1_2 = new JLabel("Title");
+		lblNewLabel_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2.setBounds(10, 11, 58, 14);
+		panel_1.add(lblNewLabel_1_2);
+		
+		textField_6 = new JTextField();
+		textField_6.setColumns(10);
+		textField_6.setBounds(78, 11, 222, 20);
+		panel_1.add(textField_6);
+		
+		textField_7 = new JTextField();
+		textField_7.setColumns(10);
+		textField_7.setBounds(78, 36, 222, 20);
+		panel_1.add(textField_7);
+		
+		JLabel lblNewLabel_1_2_1 = new JLabel("Price");
+		lblNewLabel_1_2_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_2_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2_1.setBounds(10, 36, 58, 14);
+		panel_1.add(lblNewLabel_1_2_1);
+		
+		textField_8 = new JTextField();
+		textField_8.setColumns(10);
+		textField_8.setBounds(78, 61, 222, 20);
+		panel_1.add(textField_8);
+		
+		JLabel lblNewLabel_1_2_1_1 = new JLabel("Quantity");
+		lblNewLabel_1_2_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_2_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2_1_1.setBounds(10, 61, 58, 14);
+		panel_1.add(lblNewLabel_1_2_1_1);
+		
+		JLabel lblNewLabel_2_1 = new JLabel("<html><b>Description</b> (optional)</html>");
+		lblNewLabel_2_1.setBounds(310, 11, 134, 14);
+		panel_1.add(lblNewLabel_2_1);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(310, 28, 296, 249);
+		panel_1.add(scrollPane_1);
+		
+		JTextArea textArea_1 = new JTextArea();
+		textArea_1.setLineWrap(true);
+		scrollPane_1.setViewportView(textArea_1);
+		
+		JLabel lblNewLabel_1_2_1_1_1 = new JLabel("Category");
+		lblNewLabel_1_2_1_1_1.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_2_1_1_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2_1_1_1.setBounds(10, 114, 58, 14);
+		panel_1.add(lblNewLabel_1_2_1_1_1);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		
+		comboBox_1.setModel(new DefaultComboBoxModel(new String[] {"Select category...", "Engine", "Tire", "Brake", "Battery"}));
+		comboBox_1.setBounds(78, 111, 222, 23);
+		panel_1.add(comboBox_1);
+		
+		JLabel lblNewLabel_1_2_1_1_2 = new JLabel("Quantity");
+		lblNewLabel_1_2_1_1_2.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblNewLabel_1_2_1_1_2.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblNewLabel_1_2_1_1_2.setBounds(10, 86, 58, 14);
+		panel_1.add(lblNewLabel_1_2_1_1_2);
+		
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("New");
+		rdbtnNewRadioButton_1.setBounds(78, 83, 58, 23);
+		panel_1.add(rdbtnNewRadioButton_1);
+		
+		JRadioButton rdbtnNewRadioButton_1_1 = new JRadioButton("Used");
+		rdbtnNewRadioButton_1_1.setBounds(138, 83, 58, 23);
+		panel_1.add(rdbtnNewRadioButton_1_1);
+		
+		
+		JPanel vehiclePartDetailsPanel = new JPanel();
+		vehiclePartDetailsPanel.setBounds(10, 145, 290, 170);
+		panel_1.add(vehiclePartDetailsPanel);
+		CardLayout cardLayout = new CardLayout(0, 0);
+		vehiclePartDetailsPanel.setLayout(cardLayout);
+		vehiclePartDetailsPanel.setVisible(false); // default = invisible
+		
+		// Panel border styling
+		TitledBorder border = new TitledBorder(null, "Engine details", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JPanel engineFormPanel = new JPanel();
+		engineFormPanel.setBorder(border);
+		vehiclePartDetailsPanel.add(engineFormPanel, "Engine");
+		
+		// Panel border styling
+		border = new TitledBorder(null, "Tire details", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JPanel tireFormPanel = new JPanel();
+		tireFormPanel.setBorder(border);
+		vehiclePartDetailsPanel.add(tireFormPanel, "Tire");
+		
+		// Panel border styling
+		border = new TitledBorder(null, "Brake details", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JPanel brakeFormPanel = new JPanel();
+		brakeFormPanel.setBorder(border);
+		vehiclePartDetailsPanel.add(brakeFormPanel, "Brake");
+		
+		// Panel border styling
+		border = new TitledBorder(null, "Battery details", TitledBorder.LEADING, TitledBorder.TOP, null, null);
+		border.setTitleFont(new Font("Tahoma", Font.PLAIN, 12));
+		
+		JPanel batteryFormPanel = new JPanel();
+		batteryFormPanel.setBorder(border);
+		vehiclePartDetailsPanel.add(batteryFormPanel, "Battery");
+		
+		// Vehicle part category dropdown action listener
+		comboBox_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String vehiclePartCategory = ((JComboBox) e.getSource()).getSelectedItem().toString();
+				System.out.println(vehiclePartCategory);
+				
+				switch (vehiclePartCategory) {
+				case "Engine": {
+					vehiclePartDetailsPanel.setVisible(true);
+					cardLayout.show(vehiclePartDetailsPanel, "Engine");
+					break;
+				}
+				case "Tire": {
+					vehiclePartDetailsPanel.setVisible(true);
+					cardLayout.show(vehiclePartDetailsPanel, "Tire");
+					break;
+
+				}
+				case "Brake": {
+					vehiclePartDetailsPanel.setVisible(true);
+					cardLayout.show(vehiclePartDetailsPanel, "Brake");
+					break;
+
+				}
+				case "Battery": {
+					vehiclePartDetailsPanel.setVisible(true);
+					cardLayout.show(vehiclePartDetailsPanel, "Battery");
+					break;
+
+				}
+				default:
+					vehiclePartDetailsPanel.setVisible(false);
+				}
+			}
+		});
 		
 		JPanel panel_2 = new JPanel();
 		tabbedPane.addTab("Add accessory", null, panel_2, null);
