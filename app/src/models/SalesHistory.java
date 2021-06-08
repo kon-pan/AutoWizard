@@ -11,11 +11,11 @@ public class SalesHistory {
 	private ArrayList<Sale> salesHistory = new ArrayList<Sale>();
 	
 	public SalesHistory() {
-		salesHistory.add(new Sale(101, "Giannis", "16/04/2021", "Yaris", "Stylianos", 4000, "Recurring"));
-		salesHistory.add(new Sale(102, "George", "20/04/2021", "ThunderBolt Exhaust Tip", "Stylianos", 300, "Total Sum"));
+		salesHistory.add(new Sale(101, "Giannis", "16/04/2021", "Yaris", "Stylianos", 4000, "Total Sum"));
+		salesHistory.add(new Sale(102, "George", "20/04/2021", "ThunderBolt Exhaust Tip", "Stylianos", 300, "Recurring"));
 		salesHistory.add(new Sale(103, "Nick", "23/05/2021", "BBS RW2 Tyre Rims", "Stylianos", 400, "Total Sum"));
 		salesHistory.add(new Sale(104, "Ntinos", "27/05/2021", "RX8 Mazda", "Stylianos", 48000, "Total Sum"));
-		salesHistory.add(new Sale(105, "Ntinos", "07/06/2021", "BBS Windshield Sticker", "Stylianos", 4000, "Total Sum"));
+		salesHistory.add(new Sale(105, "Ntinos", "07/06/2021", "BBS Windshield Sticker", "Stylianos", 4000, "Recurring"));
 	}
 	
 	public ArrayList<Sale> getAllSales(){
