@@ -9,6 +9,7 @@ import models.Item;
 import models.ItemList;
 import models.Sale;
 import models.SalesHistory;
+import ui.Login;
 import ui.manager.ManagerRegisterNewEmployee;
 
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JToolBar;
+import javax.swing.SwingUtilities;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import java.awt.CardLayout;
+import java.awt.Component;
 import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -38,6 +41,9 @@ import javax.swing.JTextPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import com.toedter.calendar.demo.DateChooserPanel;
 
 public class SalesMainMenu extends JFrame {
 
@@ -53,11 +59,11 @@ public class SalesMainMenu extends JFrame {
 	private JTextField soldItemNameTextField;
 	private JTextField salespersonNameTextField;
 	private JTextField priceOfSaleTextField;
-	private JTextField paymentPlanTextField;
 	public static JTable itemsList;
 	public static JTable salesHistory;
 	private JTextField stockSearchQueryTextField;
 	
+	public String paymentPlan = "Total Sum";
 	public static DefaultTableModel tableModel;
 	public static DefaultTableModel tableModelHistory;
 	public static ItemList il;
@@ -98,6 +104,19 @@ public class SalesMainMenu extends JFrame {
 		
 		JButton customerSupportButton = new JButton("Customer Support");
 		menuBar.add(customerSupportButton);
+		
+		JButton salesMenuLogoutButton = new JButton("Log Out");
+		salesMenuLogoutButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Component component = (Component) e.getSource();
+				JFrame currentFrame = (JFrame) SwingUtilities.getRoot(component);
+				
+				currentFrame.setVisible(false);
+				Login loginFrame = new Login();
+				loginFrame.setVisible(true);
+			}
+		});
+		menuBar.add(salesMenuLogoutButton);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -386,9 +405,6 @@ public class SalesMainMenu extends JFrame {
 		priceOfSaleTextField = new JTextField();
 		priceOfSaleTextField.setColumns(10);
 		
-		paymentPlanTextField = new JTextField();
-		paymentPlanTextField.setColumns(10);
-		
 		JButton submitSaleButton = new JButton("Submit");
 		submitSaleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -398,7 +414,6 @@ public class SalesMainMenu extends JFrame {
 				String soldItemName = soldItemNameTextField.getText();
 				String salepersonName = salespersonNameTextField.getText();
 				int priceOfSale = Integer.parseInt(priceOfSaleTextField.getText());
-				String paymentPlan = paymentPlanTextField.getText();
 				
 				SalesHistory sh = new SalesHistory();
 				Sale sale = new Sale(saleId, customerName, dateOfSale, soldItemName, salepersonName, priceOfSale, paymentPlan);
@@ -437,41 +452,43 @@ public class SalesMainMenu extends JFrame {
 		
 		JLabel lblNewLabel_13 = new JLabel("Payment Plan");
 		lblNewLabel_13.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paymentPlan = ((JComboBox) e.getSource()).getSelectedItem().toString();
+			}
+		});
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Total Sum", "Recurring"}));
 		GroupLayout gl_newSale = new GroupLayout(newSale);
 		gl_newSale.setHorizontalGroup(
-			gl_newSale.createParallelGroup(Alignment.TRAILING)
+			gl_newSale.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_newSale.createSequentialGroup()
-					.addContainerGap(810, Short.MAX_VALUE)
+					.addContainerGap()
+					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_newSale.createSequentialGroup()
+							.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(saleIdTextField)
+								.addComponent(customerNameTextField, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+								.addComponent(dateOfSaleTextField)
+								.addComponent(soldItemNameTextField)
+								.addComponent(salespersonNameTextField)
+								.addComponent(priceOfSaleTextField))
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNewLabel_4)
+								.addComponent(lblNewLabel_6)
+								.addComponent(lblNewLabel_7)
+								.addComponent(lblNewLabel_8)
+								.addComponent(lblNewLabel_9)
+								.addComponent(lblNewLabel_10)
+								.addComponent(lblNewLabel_13))))
+					.addPreferredGap(ComponentPlacement.RELATED, 445, Short.MAX_VALUE)
 					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
-				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(779, Short.MAX_VALUE))
-				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(793, Short.MAX_VALUE))
-				.addGroup(Alignment.LEADING, gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(saleIdTextField, Alignment.LEADING)
-						.addComponent(customerNameTextField, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-						.addComponent(dateOfSaleTextField, Alignment.LEADING)
-						.addComponent(soldItemNameTextField, Alignment.LEADING)
-						.addComponent(salespersonNameTextField, Alignment.LEADING)
-						.addComponent(priceOfSaleTextField, Alignment.LEADING)
-						.addComponent(paymentPlanTextField, Alignment.LEADING))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_4)
-						.addComponent(lblNewLabel_6)
-						.addComponent(lblNewLabel_7)
-						.addComponent(lblNewLabel_8)
-						.addComponent(lblNewLabel_9)
-						.addComponent(lblNewLabel_10)
-						.addComponent(lblNewLabel_13))
-					.addContainerGap(545, Short.MAX_VALUE))
 		);
 		gl_newSale.setVerticalGroup(
 			gl_newSale.createParallelGroup(Alignment.LEADING)
@@ -506,10 +523,10 @@ public class SalesMainMenu extends JFrame {
 						.addComponent(priceOfSaleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_10))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(paymentPlanTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_13))
-					.addPreferredGap(ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_13)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
 					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap())
 		);

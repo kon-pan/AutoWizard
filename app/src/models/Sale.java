@@ -11,8 +11,7 @@ public class Sale {
 	private int priceOfSale;
 	private String paymentPlan;
 	
-	public Sale(int saleId, String customerName, String dateOfSale, String soldItemName, String salespersonName, int priceOfSale,
-			String paymentPlan) {
+	public Sale(int saleId, String customerName, String dateOfSale, String soldItemName, String salespersonName, int priceOfSale, String paymentPlan) {
 		super();
 		this.saleId = saleId;
 		this.customerName = customerName;
