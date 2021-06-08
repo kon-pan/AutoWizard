@@ -3,6 +3,8 @@ package ui.sales;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import models.Customer;
+import models.CustomerList;
 import models.Employee;
 import models.EmployeeList;
 import models.Item;
@@ -48,11 +50,11 @@ import com.toedter.calendar.demo.DateChooserPanel;
 public class SalesMainMenu extends JFrame {
 
 	private JPanel contentPane;
-	private JLayeredPane layeredPane;
+	private  JLayeredPane layeredPane;
 	private JPanel stock;
 	private JPanel history;
 	private JPanel newSale;
-	private JPanel customerSupport;
+	private  JPanel customerSupport;
 	private JTextField historySearchQueryTextField;
 	private JTextField customerNameTextField;
 	private JTextField dateOfSaleTextField;
@@ -61,15 +63,20 @@ public class SalesMainMenu extends JFrame {
 	private JTextField priceOfSaleTextField;
 	public static JTable itemsList;
 	public static JTable salesHistory;
+	public static JTable customerList;
 	private JTextField stockSearchQueryTextField;
 	
 	public String paymentPlan = "Total Sum";
 	public static DefaultTableModel tableModel;
 	public static DefaultTableModel tableModelHistory;
+	public static DefaultTableModel tableModelCustomerSupport;
 	public static ItemList il;
 	public static JScrollPane itemsListPanel;
 	public static JScrollPane salesHistoryPanel;
+	public static JScrollPane customerSupportPanel;
+	
 	private JTextField saleIdTextField;
+	private JTextField customerSupportSearchTextField;
 	
 	
 	public void switchTabs(JPanel panel) {
@@ -532,30 +539,159 @@ public class SalesMainMenu extends JFrame {
 		);
 		newSale.setLayout(gl_newSale);
 		
+		
+		//***********************************
+		//Customer Support
+		//***********************************
 		customerSupport = new JPanel();
 		layeredPane.add(customerSupport, "name_1120344336413000");
+		customerSupport.setLayout(null);
 		
-		JLabel lblNewLabel_3 = new JLabel("testCustomerSupport");
-		GroupLayout gl_customerSupport = new GroupLayout(customerSupport);
-		gl_customerSupport.setHorizontalGroup(
-			gl_customerSupport.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_customerSupport.createSequentialGroup()
-					.addGap(200)
-					.addComponent(lblNewLabel_3)
-					.addContainerGap(248, Short.MAX_VALUE))
-		);
-		gl_customerSupport.setVerticalGroup(
-			gl_customerSupport.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_customerSupport.createSequentialGroup()
-					.addGap(137)
-					.addComponent(lblNewLabel_3)
-					.addContainerGap(153, Short.MAX_VALUE))
-		);
-		customerSupport.setLayout(gl_customerSupport);
+		JLabel lblNewLabel_3 = new JLabel("Customer Support");
+		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 24));
+		lblNewLabel_3.setBounds(10, 11, 223, 35);
+		customerSupport.add(lblNewLabel_3);
+		
+		customerSupportSearchTextField = new JTextField();
+		customerSupportSearchTextField.setBounds(10, 85, 223, 20);
+		customerSupport.add(customerSupportSearchTextField);
+		customerSupportSearchTextField.setColumns(10);
+		
+		
+		JLabel lblNewLabel_14 = new JLabel("Search Customers");
+		lblNewLabel_14.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblNewLabel_14.setBounds(10, 60, 152, 14);
+		customerSupport.add(lblNewLabel_14);
+		
+		customerSupportPanel = new JScrollPane();
+		customerSupportPanel.setBounds(10, 116, 890, 333);
+		customerSupport.add(customerSupportPanel);
+		
+		CustomerList cl = new CustomerList();
+		tableModelCustomerSupport = cl.createCustomersList();
+		
+		customerList = new JTable(tableModelCustomerSupport){
+			public boolean isCellEditable(int row, int column){
+		        return false;
+		   }
+		};
+		customerSupportPanel.setViewportView(customerList);
+		
+		customerList.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // If a row is double-clicked
+            	int customerId = 0;
+                if (e.getClickCount() == 2) {
+                    int selectedRowIndex = customerList.getSelectedRow();
+                    customerId = (int) customerList.getModel().getValueAt(selectedRowIndex, 0);
+                    try {
+    					EditCustomerInfoDialog dialog = new EditCustomerInfoDialog(customerId);
+    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+    					dialog.setVisible(true);
+    				} catch (Exception e1) {
+    					e1.printStackTrace();
+    				}
+                    System.out.println(customerId); 
+                }
+            }
+        });
+		customerSupportPanel.setViewportView(customerList);
+		
+		JButton customerSupportRegisterNewCustomerButton = new JButton("Register New Customer");
+		customerSupportRegisterNewCustomerButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+                	RegisterNewCustomerDialog dialog = new RegisterNewCustomerDialog();
+					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+					dialog.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		
+		customerSupportRegisterNewCustomerButton.setBounds(748, 60, 152, 45);
+		customerSupport.add(customerSupportRegisterNewCustomerButton);
+		
+		JButton customerSupportSearchButton = new JButton("Search");
+		customerSupportSearchButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					String searchQuery = customerSupportSearchTextField.getText();
+					ArrayList<Customer> searchResults = CustomerList.searchCustomer(searchQuery);
+					
+					System.out.println(searchResults);
+					
+					if (!searchQuery.equals("")) {
+						// Clear JTable values
+						tableModelCustomerSupport.setRowCount(0);
+						
+						CustomerList cl = new CustomerList();
+						DefaultTableModel tableModel = cl.createCustomersList(searchResults);
+
+						JTable searchResultsList = new JTable(tableModel) {
+							public boolean isCellEditable(int row, int column){
+						        return false;
+						   }
+						};
+						searchResultsList.addMouseListener(new MouseAdapter() {
+				            @Override
+				            public void mouseClicked(MouseEvent e) {
+				                // If a row is double-clicked
+				            	int customerId = 0;
+				                if (e.getClickCount() == 2) {
+				                    int selectedRowIndex = searchResultsList.getSelectedRow();
+				                    customerId = (int) searchResultsList.getModel().getValueAt(selectedRowIndex, 0);
+				                    try {
+				                    	EditCustomerInfoDialog dialog = new EditCustomerInfoDialog(customerId);
+				    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				    					dialog.setVisible(true);
+				    				} catch (Exception e1) {
+				    					e1.printStackTrace();
+				    				}
+				                    System.out.println(customerId); 
+				                }
+				            }
+				        });
+						customerSupportPanel.setViewportView(searchResultsList);		
+					}else {
+						CustomerList cl = new CustomerList();
+						DefaultTableModel tableModel = cl.createCustomersList();
+						
+						customerList = new JTable(tableModel) {
+							public boolean isCellEditable(int row, int column){
+						        return false;
+						   }
+						};
+						customerList.addMouseListener(new MouseAdapter() {
+				            @Override
+				            public void mouseClicked(MouseEvent e) {
+				                // If a row is double-clicked
+				            	int customerId = 0;
+				                if (e.getClickCount() == 2) {
+				                    int selectedRowIndex = customerList.getSelectedRow();
+				                    customerId = (int) customerList.getModel().getValueAt(selectedRowIndex, 0);
+				                    try {
+				                    	EditCustomerInfoDialog dialog = new EditCustomerInfoDialog(customerId);
+				    					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+				    					dialog.setVisible(true);
+				    				} catch (Exception e1) {
+				    					e1.printStackTrace();
+				    				}
+				                    System.out.println(customerId); 
+				                }
+				            }
+				        });
+						customerSupportPanel.setViewportView(customerList);
+					}
+			}
+		});
+		customerSupportSearchButton.setBounds(243, 85, 89, 20);
+		customerSupport.add(customerSupportSearchButton);
 		contentPane.setLayout(gl_contentPane);
 		
 		/*
-		 * Button handlers for switching between panels
+		 * Button handlers for switching between tabs
 		 */
 		stockButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
