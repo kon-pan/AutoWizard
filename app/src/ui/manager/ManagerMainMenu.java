@@ -29,7 +29,7 @@ public class ManagerMainMenu extends JFrame {
 	public ManagerMainMenu() {
 		setTitle("AutoWizard (Manager) - Main Menu");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 512, 362);
+		setBounds(100, 100, 679, 362);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -61,6 +61,9 @@ public class ManagerMainMenu extends JFrame {
 		btnManageStock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
+					Component component = (Component) e.getSource();
+					JFrame currentFrame = (JFrame) SwingUtilities.getRoot(component);
+					currentFrame.setVisible(false);
 					ManagerManageStock frame = new ManagerManageStock();
 					frame.setVisible(true);
 				} catch (Exception e1) {
@@ -72,11 +75,28 @@ public class ManagerMainMenu extends JFrame {
 		contentPane.add(btnManageStock);
 		
 		JButton btnReviewReports = new JButton("Review Reports");
-		btnReviewReports.setBounds(321, 61, 160, 120);
+		btnReviewReports.setBounds(484, 61, 160, 120);
 		contentPane.add(btnReviewReports);
 		
 		JButton btnNewButton_1_1 = new JButton("Review Orders");
-		btnNewButton_1_1.setBounds(321, 192, 160, 120);
+		btnNewButton_1_1.setBounds(484, 192, 160, 120);
 		contentPane.add(btnNewButton_1_1);
+		
+		JButton btnManageSuppliers = new JButton("Manage Suppliers");
+		btnManageSuppliers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					Component component = (Component) e.getSource();
+					JFrame currentFrame = (JFrame) SwingUtilities.getRoot(component);
+					currentFrame.setVisible(false);
+					ManagerManageSuppliers frame = new ManagerManageSuppliers();
+					frame.setVisible(true);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnManageSuppliers.setBounds(180, 61, 160, 120);
+		contentPane.add(btnManageSuppliers);
 	}
 }
