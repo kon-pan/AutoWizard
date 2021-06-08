@@ -140,4 +140,21 @@ public class EmployeeList {
 		
 		return employees;
 	}
+	
+	public ArrayList<Employee> removeEmployee(int employeeId) {
+		boolean removeSuccess = false;
+		
+		// Get all employees
+		ArrayList<Employee> employees = this.getAllEmployees();
+		
+		// Find index of employee with id equal to employeeId
+		for (int i = 0; i < employees.size(); i++) {
+			Employee element = employees.get(i);
+			if(element.getEmployeeId() == employeeId) {
+				employees.remove(i);
+			}
+		}
+		
+		return employees;
+	}
 }
