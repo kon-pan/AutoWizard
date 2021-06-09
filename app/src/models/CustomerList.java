@@ -116,4 +116,14 @@ public class CustomerList {
 		System.out.println(customers);
 		return customers;
 	}
+	
+	public int generateId(ArrayList<Customer> customers) {
+		customers = this.getAllCustomers();
+		Customer element = customers.get(customers.size()-1);
+		int id;
+		id = element.getCustomerId();
+		id++;
+		
+		return id;
+	}
 }

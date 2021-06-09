@@ -46,6 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import com.toedter.calendar.demo.DateChooserPanel;
+import com.toedter.calendar.JDateChooser;
 
 public class SalesMainMenu extends JFrame {
 
@@ -57,7 +58,6 @@ public class SalesMainMenu extends JFrame {
 	private  JPanel customerSupport;
 	private JTextField historySearchQueryTextField;
 	private JTextField customerNameTextField;
-	private JTextField dateOfSaleTextField;
 	private JTextField soldItemNameTextField;
 	private JTextField salespersonNameTextField;
 	private JTextField priceOfSaleTextField;
@@ -389,35 +389,46 @@ public class SalesMainMenu extends JFrame {
 		layeredPane.add(newSale, "name_1120342745378900");
 		
 		JLabel lblNewLabel_2 = new JLabel("NewSale");
+		lblNewLabel_2.setBounds(10, 11, 121, 29);
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 24));
 		
 		saleIdTextField = new JTextField();
+		saleIdTextField.setBounds(10, 93, 215, 20);
+		saleIdTextField.setEnabled(false);
 		saleIdTextField.setColumns(10);
+		ArrayList<Sale> sales = sh.getAllSales();
+		saleIdTextField.setText(Integer.toString(sh.generateId(sales)));
 		
 		customerNameTextField = new JTextField();
+		customerNameTextField.setBounds(10, 121, 215, 20);
 		customerNameTextField.setColumns(10);
 		
 		JLabel lblNewLabel_5 = new JLabel("Sale Details");
+		lblNewLabel_5.setBounds(10, 67, 107, 20);
 		lblNewLabel_5.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
-		dateOfSaleTextField = new JTextField();
-		dateOfSaleTextField.setColumns(10);
-		
 		soldItemNameTextField = new JTextField();
+		soldItemNameTextField.setBounds(10, 175, 215, 20);
 		soldItemNameTextField.setColumns(10);
 		
 		salespersonNameTextField = new JTextField();
+		salespersonNameTextField.setBounds(10, 239, 215, 20);
 		salespersonNameTextField.setColumns(10);
 		
 		priceOfSaleTextField = new JTextField();
+		priceOfSaleTextField.setBounds(10, 277, 215, 20);
 		priceOfSaleTextField.setColumns(10);
 		
+		JDateChooser newSaleDateChooser = new JDateChooser();
+		newSaleDateChooser.setBounds(10, 149, 215, 20);
+		
 		JButton submitSaleButton = new JButton("Submit");
+		submitSaleButton.setBounds(810, 412, 90, 37);
 		submitSaleButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int saleId = Integer.parseInt(saleIdTextField.getText());
 				String customerName = customerNameTextField.getText();
-				String dateOfSale = dateOfSaleTextField.getText();
+				String dateOfSale = newSaleDateChooser.getDate().toString();
 				String soldItemName = soldItemNameTextField.getText();
 				String salepersonName = salespersonNameTextField.getText();
 				int priceOfSale = Integer.parseInt(priceOfSaleTextField.getText());
@@ -440,104 +451,78 @@ public class SalesMainMenu extends JFrame {
 		});
 		
 		JLabel lblNewLabel_4 = new JLabel("ID");
+		lblNewLabel_4.setBounds(235, 93, 19, 20);
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JLabel lblNewLabel_6 = new JLabel("Customer Name");
+		lblNewLabel_6.setBounds(235, 121, 130, 20);
 		lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JLabel lblNewLabel_7 = new JLabel("Date of Sale");
+		lblNewLabel_7.setBounds(235, 149, 100, 20);
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
-		JLabel lblNewLabel_8 = new JLabel("Item Name");
+		JLabel lblNewLabel_8 = new JLabel("Item Id");
+		lblNewLabel_8.setBounds(235, 175, 91, 20);
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JLabel lblNewLabel_9 = new JLabel("Salesperson");
+		lblNewLabel_9.setBounds(234, 239, 98, 20);
 		lblNewLabel_9.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JLabel lblNewLabel_10 = new JLabel("Price");
+		lblNewLabel_10.setBounds(234, 277, 41, 20);
 		lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JLabel lblNewLabel_13 = new JLabel("Payment Plan");
+		lblNewLabel_13.setBounds(234, 303, 113, 20);
 		lblNewLabel_13.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
 		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(10, 305, 215, 20);
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paymentPlan = ((JComboBox) e.getSource()).getSelectedItem().toString();
 			}
 		});
 		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Total Sum", "Recurring"}));
-		GroupLayout gl_newSale = new GroupLayout(newSale);
-		gl_newSale.setHorizontalGroup(
-			gl_newSale.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblNewLabel_2, GroupLayout.PREFERRED_SIZE, 121, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_5, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(comboBox, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(saleIdTextField)
-								.addComponent(customerNameTextField, GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-								.addComponent(dateOfSaleTextField)
-								.addComponent(soldItemNameTextField)
-								.addComponent(salespersonNameTextField)
-								.addComponent(priceOfSaleTextField))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_newSale.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblNewLabel_4)
-								.addComponent(lblNewLabel_6)
-								.addComponent(lblNewLabel_7)
-								.addComponent(lblNewLabel_8)
-								.addComponent(lblNewLabel_9)
-								.addComponent(lblNewLabel_10)
-								.addComponent(lblNewLabel_13))))
-					.addPreferredGap(ComponentPlacement.RELATED, 445, Short.MAX_VALUE)
-					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_newSale.setVerticalGroup(
-			gl_newSale.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_newSale.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblNewLabel_4)
-						.addGroup(gl_newSale.createSequentialGroup()
-							.addComponent(lblNewLabel_2)
-							.addGap(27)
-							.addComponent(lblNewLabel_5)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(saleIdTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addGap(8)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(customerNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_6))
-					.addGap(8)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(dateOfSaleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_7))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(soldItemNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_8))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(salespersonNameTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_9))
-					.addGap(18)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.TRAILING)
-						.addComponent(priceOfSaleTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_10))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_newSale.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_13)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
-					.addComponent(submitSaleButton, GroupLayout.PREFERRED_SIZE, 37, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		newSale.setLayout(gl_newSale);
+		newSale.setLayout(null);
+		newSale.add(lblNewLabel_2);
+		newSale.add(lblNewLabel_5);
+		newSale.add(newSaleDateChooser);
+		newSale.add(comboBox);
+		newSale.add(saleIdTextField);
+		newSale.add(customerNameTextField);
+		newSale.add(soldItemNameTextField);
+		newSale.add(salespersonNameTextField);
+		newSale.add(priceOfSaleTextField);
+		newSale.add(lblNewLabel_4);
+		newSale.add(lblNewLabel_6);
+		newSale.add(lblNewLabel_7);
+		newSale.add(lblNewLabel_8);
+		newSale.add(lblNewLabel_9);
+		newSale.add(lblNewLabel_10);
+		newSale.add(lblNewLabel_13);
+		newSale.add(submitSaleButton);
+		
+		JButton newSaleItemDetailsButton = new JButton("Fetch Item Details");
+		newSaleItemDetailsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int itemId = Integer.parseInt(soldItemNameTextField.getText());
+				Item item = il.getItemById(itemId);
+				
+				String newItemId = Integer.toString(item.getItemId());
+				String itemPrice = Integer.toString(item.getItemPrice());
+				String itemName = item.getItemName();
+				String itemType = item.getItemType();
+				
+				String[] row = {newItemId, itemPrice, itemName, itemType};
+				
+				System.out.println(row);
+			}
+		});
+		newSaleItemDetailsButton.setBounds(10, 205, 147, 23);
+		newSale.add(newSaleItemDetailsButton);
 		
 		
 		//***********************************

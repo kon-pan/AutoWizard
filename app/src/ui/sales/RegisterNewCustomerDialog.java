@@ -96,7 +96,9 @@ public class RegisterNewCustomerDialog extends JFrame {
 				String customerEmail = registerEmailTextField.getText();
 				
 				CustomerList cl = new CustomerList();
-				Customer customer = new Customer(1234560, customerName, registrationDate, phoneNumber, customerEmail, 0);
+				ArrayList<Customer> elements = new ArrayList<Customer>();
+				int customerId = cl.generateId(elements);
+				Customer customer = new Customer(customerId, customerName, registrationDate, phoneNumber, customerEmail, 0);
 				ArrayList<Customer> customers = cl.registerCustomer(customer);
 				
 				SalesMainMenu.tableModelCustomerSupport.setRowCount(0);

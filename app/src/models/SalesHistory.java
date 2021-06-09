@@ -113,10 +113,20 @@ public class SalesHistory {
 	}
 	
 	public ArrayList<Sale> registerSale(Sale sale) {
-		// Get all employees
+		
 		ArrayList<Sale> sales = this.getAllSales();
 		sales.add(sale);
 		System.out.println(sales);
 		return sales;
+	}
+	
+	public int generateId(ArrayList<Sale> sales) {
+		sales = this.getAllSales();
+		Sale element = sales.get(sales.size()-1);
+		int id;
+		id = element.getSaleId();
+		id++;
+		
+		return id;
 	}
 }
