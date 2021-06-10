@@ -104,7 +104,7 @@ public class EditItemDialog extends JFrame {
 					String itemType = itemTypeTextField.getText();
 					
 					ItemList il = new ItemList();
-					ArrayList<Item> updatedList = il.updateItem(itemId, itemPrice, itemName, itemType);
+					ArrayList<Object> updatedList = il.updateItem(itemId, itemPrice, itemName, itemType);
 					SalesMainMenu.tableModel.setRowCount(0); // make list empty
 					SalesMainMenu.tableModel = il.createItemsList(updatedList); // Get new table model
 					

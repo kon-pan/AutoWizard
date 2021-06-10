@@ -216,7 +216,7 @@ public class SalesMainMenu extends JFrame {
 		stockSearchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String searchQuery = stockSearchQueryTextField.getText();
-				ArrayList<Item> searchResults = ItemList.searchItem(searchQuery);
+				ArrayList<Object> searchResults = ItemList.searchItem(searchQuery);
 				
 				System.out.println(searchResults);
 				
